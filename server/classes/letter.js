@@ -1,46 +1,23 @@
 'use strict';
 
-// omitting: Q, X, V, Y, Z
-const letters = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'R',
-  'S',
-  'T',
-  'U',
-  'W'
-];
+const letters = require('../data/letters.json');
 
 module.exports = class Letter {
   constructor(io, room) {
-    this.unused = this.initialize();
+    this.letters = this.newLetters();
     this.io = io;
     this.room = room;
-    // this.letter = shuffled[0];
+    this.last = '';
   }
 
-  initialize() {
-    let duplicates = true;
+  newLetters() {
+    let sameAsLast = true;
     let shuffled;
-    while (duplicates) {
+    while (sameAsLast) {
       shuffled = this.shuffleLetters();
-      if (this.unused === undefined) duplicates = false;
-      else if (shuffled[0] !== this.unused[0]) duplicates = false;
+      if (!this.last || (this.last && shuffled[0] !== this.last)) sameAsLast = false;
     }
+    this.last = '';
     return shuffled;
   }
 
@@ -54,16 +31,20 @@ module.exports = class Letter {
   }
 
   curr() {
-    this.io.to(this.room).emit('letter', {letter: this.unused[0]});
+    if (!this.letters || this.letters.length === 0) {
+      this.letters = this.newLetters();
+    }
+    this.io.to(this.room).emit('letter', {letter: this.letters[0]});
   }
 
   next() {
-    if (this.unused) {
-      this.unused = this.unused.slice(1);
-    } else {
-      this.unused = this.shuffleLetters();
+    console.log(this.letters);
+    if (!this.letters || this.letters.length === 0) {
+      this.letters = this.newLetters();
     }
-    this.io.to(this.room).emit('letter', {letter: this.unused[0]});
+    this.io.to(this.room).emit('letter', {letter: this.letters[0]});
+    this.last = this.letters[0];
+    this.letters = this.letters.slice(1);
   }
 
 }

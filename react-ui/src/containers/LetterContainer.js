@@ -20,14 +20,14 @@ class LetterContainer extends React.Component {
     });
   }
 
-  updateLetterState = () => {
+  shuffleLetter = () => {
     this.socket.emit('letter:shuffle');
   }
 
   render() {
     return (
       <div>
-        <Letter letter={this.state.letter} handleClick={this.updateLetterState}/>
+        <Letter letter={this.state.letter} handleClick={this.shuffleLetter}/>
       </div>
     )
   }

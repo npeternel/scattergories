@@ -5,6 +5,7 @@ const socket = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const Timer = require('./classes/timer');
 const Letter = require('./classes/letter');
+const Categories = require('./classes/categories');
 
 const app = express();
 
@@ -25,9 +26,9 @@ io.on('connection', (socket) => {
       id: id,
       name: 'myroom',
       timer: new Timer(120, io, id),
-      letter: new Letter(io, id)
+      letter: new Letter(io, id),
+      categories: new Categories(io, id)
     };
-    // rooms.push(room);
     rooms[room.id] = room;
     console.log(`Room with UUID ${room.id} created`);
   }
@@ -36,8 +37,14 @@ io.on('connection', (socket) => {
   socket.join(id);
   console.log('New client');
   room.letter.curr();
+  room.categories.curr();
   socket.on('letter:shuffle', () => {
+    room.timer.reset();
     room.letter.next();
+  });
+  socket.on('categories:shuffle', () => {
+    room.timer.reset();
+    room.categories.next();
   });
   socket.on('timer:start', () => {
     room.timer.start();

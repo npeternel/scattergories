@@ -1,15 +1,19 @@
 import React from 'react';
+import '../index.css';
 
-const Category = ({ }) => {
-  return (
-    <div>
-      <form>
-        <input
-          value={}
-          onChange={handleAnswerChange}/>
-      </form>
-    </div>
-  )
+class Categories extends React.Component {
+
+  render() {
+    return (
+      <li>
+        <div className="category-div">
+          <p className="category-text">{this.props.title}</p>
+          <input className="category-input">
+          </input>
+        </div>
+      </li>
+    )
+  }
 }
 
-export default Category;
+export default Categories;
