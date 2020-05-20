@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
     "build": "cd react-ui/ && npm run build"
   },
   "repository": {
@@ -15,6 +16,10 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

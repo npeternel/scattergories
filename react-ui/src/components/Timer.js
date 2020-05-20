@@ -10,7 +10,7 @@ class Timer extends React.Component {
           {this.props.running ? 'Stop' : 'Start'}
         </button>
         <button onClick={() => this.props.handleReset()}>
-          Reset
+          Reset Timer
         </button>
       </div>
     )

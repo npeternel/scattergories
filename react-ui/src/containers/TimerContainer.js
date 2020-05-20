@@ -10,39 +10,33 @@ class TimerContainer extends React.Component {
       time: 120,
       running: false
     };
+  }
 
+  componentDidMount() {
     this.socket = io('localhost:3001');
-    this.socket.on('timer', (time) => {
-      this.setTimer(time);
+    this.socket.on('time', (data) => {
+      this.setTimer(data.time, data.running);
     });
   }
 
-  setTimer = (time) => {
+  setTimer = (time, running) => {
     this.setState({
       time: time,
-      running: this.state.running
+      running: running
     });
   }
 
   toggleTimer = () => {
     if (this.state.running) {
-      this.socket.emit('stop');
+      this.socket.emit('timer:stop');
     }
     if (!this.state.running) {
-      this.socket.emit('start');
+      this.socket.emit('timer:start');
     }
-    this.setState({
-      time: this.state.time,
-      running: !this.state.running
-    });
   }
 
   resetTimer = () => {
-    this.socket.emit('reset');
-    this.setState({
-      time: this.state.time,
-      running: false
-    });
+    this.socket.emit('timer:reset');
   }
 
   render() {

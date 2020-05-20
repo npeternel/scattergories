@@ -2,6 +2,9 @@
 
 const express = require('express');
 const socket = require('socket.io');
+const { v4: uuidv4 } = require('uuid');
+const Timer = require('./classes/timer');
+const Letter = require('./classes/letter');
 
 const app = express();
 
@@ -13,32 +16,40 @@ const server = app.listen(PORT, () => {
 
 const io = socket(server);
 
-let timer = 120;
-let interval;
+const rooms = {};
+
 io.on('connection', (socket) => {
-  console.log('new client');
-  socket.on('start', () => {
-    console.log('starting');
-    interval = setInterval(() => {
-      timer--;
-      socket.emit('timer', timer);
-      if (timer === 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
+  if (Object.keys(rooms).length === 0) {
+    const id = uuidv4();
+    const room = {
+      id: id,
+      name: 'myroom',
+      timer: new Timer(120, io, id),
+      letter: new Letter(io, id)
+    };
+    // rooms.push(room);
+    rooms[room.id] = room;
+    console.log(`Room with UUID ${room.id} created`);
+  }
+  const id = Object.keys(rooms)[0];
+  const room = rooms[id];
+  socket.join(id);
+  console.log('New client');
+  room.letter.curr();
+  socket.on('letter:shuffle', () => {
+    room.letter.next();
   });
-  socket.on('reset', () => {
-    console.log('resetting');
-    clearInterval(interval);
-    timer = 120;
-    socket.emit('timer', timer);
+  socket.on('timer:start', () => {
+    room.timer.start();
   });
-  socket.on('stop', () => {
-    console.log('stopping');
-    clearInterval(interval);
+  socket.on('timer:reset', () => {
+    room.timer.reset();
+  });
+  socket.on('timer:stop', () => {
+    room.timer.stop();
   });
   socket.on('disconnect', () => {
     console.log('Client disconnected');
-    clearInterval(interval);
+    socket.leave(id);
   });
 });
