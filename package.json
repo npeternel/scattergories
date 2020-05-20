@@ -6,11 +6,15 @@
     "node": "10.x"
   },
   "scripts": {
-    "start": "node server",
+    "start": "node server/index.js",
     "build": "cd react-ui/ && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/npeternel/scattergories.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
   }
 }
