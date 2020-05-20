@@ -26,7 +26,7 @@ const letters = [
   'W'
 ];
 
-export default class LetterContainer extends React.Component {
+class LetterContainer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -70,8 +70,10 @@ export default class LetterContainer extends React.Component {
   render() {
     return (
       <div>
-        <Letter letter={this.state.letter} handleShuffle={this.updateLetterState}/>
+        <Letter letter={this.state.letter} handleClick={this.updateLetterState}/>
       </div>
     )
-    }
+  }
 }
+
+export default LetterContainer;

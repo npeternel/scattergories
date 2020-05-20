@@ -1,17 +1,18 @@
 import React from 'react';
 
-class Letter extends React.Component {
+class Timer extends React.Component {
 
   render() {
     return (
       <div>
-        <h1>{this.props.letter}</h1>
+        <h1>{this.props.time}</h1>
         <button onClick={() => this.props.handleClick()}>
-          Shuffle Letter
+          {this.props.running ? 'Stop' : 'Start'}
         </button>
       </div>
     )
   }
+
 }
 
-export default Letter;
+export default Timer;
