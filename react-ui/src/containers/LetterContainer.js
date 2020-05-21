@@ -1,18 +1,17 @@
 import React from 'react';
 import Letter from '../components/Letter';
-import io from 'socket.io-client';
 
 class LetterContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    this.socket = props.socket;
     this.state = {
       letter: ''
     }
   }
 
   componentDidMount() {
-    this.socket = io('localhost:3001');
     this.socket.on('letter', (data) => {
       this.setState({
         letter: data.letter

@@ -1,11 +1,11 @@
 import React from 'react';
 import Timer from '../components/Timer';
-import io from 'socket.io-client';
 
 class TimerContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    this.socket = props.socket;
     this.state = {
       time: 120,
       running: false
@@ -13,7 +13,6 @@ class TimerContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket = io('localhost:3001');
     this.socket.on('time', (data) => {
       this.setTimer(data.time, data.running);
     });
