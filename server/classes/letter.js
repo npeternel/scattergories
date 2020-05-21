@@ -38,13 +38,12 @@ module.exports = class Letter {
   }
 
   next() {
-    console.log(this.letters);
+    this.letters = this.letters.slice(1);
     if (!this.letters || this.letters.length === 0) {
       this.letters = this.newLetters();
     }
     this.io.to(this.room).emit('letter', {letter: this.letters[0]});
     this.last = this.letters[0];
-    this.letters = this.letters.slice(1);
   }
 
 }

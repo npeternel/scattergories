@@ -18,7 +18,7 @@ module.exports = class Timer {
   tick() {
     this.time--;
     this.io.to(this.room).emit('time', {time: this.time, running: true});
-    if (this.time === 0) this.stop();
+    if (this.time === 0) this.end();
   }
 
   stop() {
@@ -28,6 +28,11 @@ module.exports = class Timer {
       clearInterval(this.interval);
       this.interval = undefined;
     }
+  }
+
+  end() {
+    this.stop();
+    this.io.to(this.room).emit('time:end');
   }
 
   reset() {

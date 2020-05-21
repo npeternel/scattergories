@@ -21,3 +21,23 @@ code {
   margin: 0 auto;
   text-align: right;
 }
+
+.category-text-hidden {
+  display: inline-block;
+  margin: 0 auto;
+  text-align: right;
+  background-color: black;
+}
+
+.category-input {
+  display: inline-block;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.category-input-hidden {
+  display: inline-block;
+  margin: 0 auto;
+  text-align: right;
+  background-color: grey;
+}
