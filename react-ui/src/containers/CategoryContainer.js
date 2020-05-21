@@ -24,7 +24,7 @@ class CategoryContainer extends React.Component {
         showCategories: false,
         answers: {...this.state.answers},
         categories: data.categories,
-        end: false,
+        end: this.state.end,
         results: {...this.state.results}
       });
     });
@@ -34,7 +34,7 @@ class CategoryContainer extends React.Component {
         showCategories: data.running,
         answers: {...this.state.answers},
         categories: [...this.state.categories],
-        end: false,
+        end: this.state.end,
         results: {...this.state.results}
       });
     });
@@ -44,16 +44,15 @@ class CategoryContainer extends React.Component {
         showCategories: true,
         answers: {...this.state.answers},
         categories: [...this.state.categories],
-        end: false,
+        end: this.state.end,
         results: {...this.state.results}
       });
       this.socket.emit('answers', {id: this.socket.id, answers: this.state.answers });
     });
     this.socket.on('answers:results', (results) => {
-      console.log(results);
       this.setState({
         showAnswers: this.state.showAnswers,
-        showCategories: true,
+        showCategories: this.state.showCategories,
         answers: {...this.state.answers},
         categories: [...this.state.categories],
         end: true,
@@ -68,11 +67,11 @@ class CategoryContainer extends React.Component {
 
   handleShowAnswers = () => {
     this.setState({
-      answers: {...this.state.answers},
       showAnswers: !this.state.showAnswers,
       showCategories: this.state.showCategories,
+      answers: {...this.state.answers},
       categories: [...this.state.categories],
-      end: false,
+      end: this.state.end,
       results: {...this.state.results}
     });
   }
@@ -81,9 +80,9 @@ class CategoryContainer extends React.Component {
     const tmp = {...this.state.answers};
     tmp[i] = event.target.value;
     this.setState({
-      answers: tmp,
       showAnswers: this.state.showAnswers,
       showCategories: this.state.showCategories,
+      answers: tmp,
       categories: [...this.state.categories],
       end: this.state.end,
       results: {...this.state.results}
