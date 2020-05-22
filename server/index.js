@@ -10,6 +10,8 @@ const Answers = require('./classes/answers');
 
 const app = express();
 
+app.use(express.static('build'));
+
 const PORT = process.env.PORT || 3001;
 
 const server = app.listen(PORT, () => {
@@ -19,7 +21,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
-const TIME = 5;
+const TIME = 120;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
