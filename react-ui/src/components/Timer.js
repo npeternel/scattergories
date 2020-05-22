@@ -3,15 +3,27 @@ import React from 'react';
 class Timer extends React.Component {
 
   render() {
+    const {
+      running,
+      time,
+      ended
+    } = this.props.state;
     return (
       <div>
-        <h1>{this.props.time}</h1>
-        <button onClick={() => this.props.handleClick()}>
-          {this.props.running ? 'Pause' : 'Start'}
-        </button>
-        <button onClick={() => this.props.handleReset()}>
-          Reset
-        </button>
+        <h1>{time}</h1>
+        {ended ? null :
+          <button onClick={() => this.props.handleClick()}>
+            {running ? 'Pause' : 'Start'}
+          </button>
+        }
+        {ended ? 
+          <button onClick={() => this.props.handleRestart()}>
+            Restart
+          </button> :
+          <button onClick={() => this.props.handleReset()}>
+            Reset
+          </button>
+  }
       </div>
     )
   }

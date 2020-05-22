@@ -19,6 +19,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
+const TIME = 5;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
@@ -26,8 +27,8 @@ io.on('connection', (socket) => {
     const room = {
       id: id,
       name: 'myroom',
-      clients: [],
-      timer: new Timer(5, io, id),
+      clients: {},
+      timer: new Timer(TIME, io, id),
       letter: new Letter(io, id),
       categories: new Categories(io, id),
       answers: new Answers(io, id)
@@ -35,18 +36,21 @@ io.on('connection', (socket) => {
     rooms[room.id] = room;
     console.log(`Room with UUID ${room.id} created`);
   }
-  const id = Object.keys(rooms)[0];
-  const room = rooms[id];
-  console.log('New client');
-  // socket.on('join', (clientId) => {
-  //   console.log('New client', clientId);
-  //   if (room.clients.some((client) => client === clientId)) return;
-  //   socket.join(id);
-  //   room.clients.push(clientId);
-  // });
-  socket.join(id);
-  room.letter.curr();
-  room.categories.curr();
+  const roomId = Object.keys(rooms)[0];
+  const room = rooms[roomId];
+  socket.on('join', (name) => {
+    if (!Object.values(room.clients).some((client) => client === name)) {
+      console.log(`New client ${name}`);
+      socket.join(roomId);
+      room.clients[socket.id] = name;
+      io.to(roomId).emit('initial', {
+        clients: Object.values(room.clients),
+        time: room.timer.curr(),
+        letter: room.letter.curr(),
+        categories: room.categories.curr()
+      });
+    }
+  });
   socket.on('letter:shuffle', () => {
     room.timer.reset();
     room.letter.next();
@@ -54,6 +58,13 @@ io.on('connection', (socket) => {
   socket.on('categories:shuffle', () => {
     room.timer.reset();
     room.categories.next();
+  });
+  socket.on('game:restart', () => {
+    room.categories.next();
+    room.letter.next();
+    room.answers.reset();
+    io.to(roomId).emit('game:start');
+    room.timer.reset();
   });
   socket.on('timer:start', () => {
     room.timer.start();
@@ -69,16 +80,15 @@ io.on('connection', (socket) => {
     const interval = setInterval(() => {
       if (room.answers.allSubmitted()) {
         clearInterval(interval);
-        console.log('All answers submitted');
-        room.answers.merge();
-        // io.to(id).emit('answers:results', room.answers.merge());
+        room.answers.merge(room.clients);
       }
     },
     1000);
   });
   socket.on('disconnect', () => {
     console.log('Client disconnected');
-    socket.leave(id);
+    socket.leave(roomId);
+    delete room.clients[socket.id];
     // if (io.sockets.adapter.rooms[id].sockets.length === 0) delete rooms[id];
   });
 });

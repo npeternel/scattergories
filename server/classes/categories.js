@@ -30,7 +30,8 @@ module.exports = class Categories {
   }
 
   curr() {
-    this.io.to(this.room).emit('categories', {categories: this.unused.slice(0,12)});
+    // this.io.to(this.room).emit('categories', {categories: this.unused.slice(0,12)});
+    return this.unused.slice(0,12);
   }
 
   next() {

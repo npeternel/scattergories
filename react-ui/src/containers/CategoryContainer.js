@@ -6,6 +6,7 @@ class CategoryContainer extends React.Component {
     super(props);
 
     this.socket = props.socket;
+    this.name = props.name;
 
     this.state = {
       showAnswers: true,
@@ -18,6 +19,17 @@ class CategoryContainer extends React.Component {
   }
 
   componentDidMount() {
+    this.socket.emit('join', this.name);
+    this.socket.on('initial', (data) => {
+      this.setState({
+        showAnswers: this.state.showAnswers,
+        showCategories: this.state.showCategories,
+        answers: {...this.state.answers},
+        categories: data.categories,
+        end: this.state.end,
+        results: {...this.state.results}
+      });
+    });
     this.socket.on('categories', (data) => {
       this.setState({
         showAnswers: this.state.showAnswers,
@@ -38,6 +50,16 @@ class CategoryContainer extends React.Component {
         results: {...this.state.results}
       });
     });
+    this.socket.on('game:start', () => {
+      this.setState({
+        showAnswers: true,
+        showCategories: true,
+        answers: {},
+        categories: [...this.state.categories],
+        end: false,
+        results: {...this.state.results}
+      });
+    });
     this.socket.on('time:end', () => {
       this.setState({
         showAnswers: this.state.showAnswers,
@@ -47,7 +69,12 @@ class CategoryContainer extends React.Component {
         end: this.state.end,
         results: {...this.state.results}
       });
-      this.socket.emit('answers', {id: this.socket.id, answers: this.state.answers });
+      const answerCopy = {...this.state.answers};
+      for (let i = 0; i < this.state.categories.length; i++) {
+        if (!answerCopy[i]) answerCopy[i] = '';
+      }
+      console.log(answerCopy);
+      this.socket.emit('answers', {name: this.name, id: this.socket.id, answers: answerCopy });
     });
     this.socket.on('answers:results', (results) => {
       this.setState({

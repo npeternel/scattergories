@@ -9,8 +9,14 @@ module.exports = class Timer {
     this.interval = undefined;
   }
 
+  curr() {
+    // this.io.to(this.room).emit('time', {time: this.duration});
+    return this.time;
+  }
+
   start() {
     console.log('Starting timer');
+    if (this.time === 0) this.reset();
     this.io.to(this.room).emit('time', {time: this.time, running: true});
     this.interval = setInterval(() => this.tick(), 1000);
   }
@@ -18,7 +24,7 @@ module.exports = class Timer {
   tick() {
     this.time--;
     this.io.to(this.room).emit('time', {time: this.time, running: true});
-    if (this.time === 0) this.end();
+    if (this.time <= 0) this.end();
   }
 
   stop() {
@@ -31,6 +37,7 @@ module.exports = class Timer {
   }
 
   end() {
+    console.log('Ending');
     this.stop();
     this.io.to(this.room).emit('time:end');
   }
@@ -44,4 +51,5 @@ module.exports = class Timer {
       this.interval = undefined;
     }
   }
+
 }
