@@ -8,6 +8,7 @@ const Timer = require('./classes/timer');
 const Letter = require('./classes/letter');
 const Categories = require('./classes/categories');
 const Answers = require('./classes/answers');
+const locks = require('locks');
 
 const app = express();
 
@@ -83,8 +84,12 @@ io.on('connection', (socket) => {
     room.timer.stop();
   });
   socket.on('answers', (data) => {
-    console.log(`Received answers from ${data.name}`);
-    room.answers.submit(data);
+    const mutex = locks.createMutex();
+    mutex.lock(() => {
+      room.answers.submit(data);
+      console.log(`Received answers from ${data.name}`);
+      mutex.unlock();
+    });
     const interval = setInterval(() => {
       if (room.answers.allSubmitted(Object.values(room.clients))) {
         clearInterval(interval);
