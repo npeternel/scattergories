@@ -13,6 +13,10 @@ const app = express();
 
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
+app.get('*', (req, res) => {                       
+  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));                               
+});
+
 const PORT = process.env.PORT || 3001;
 
 const server = app.listen(PORT, () => {
