@@ -1,6 +1,13 @@
-'use strict';
-
 const letters = require('../data/letters.json');
+
+const shuffleLetters = () => {
+  const array = [...letters];
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
 
 module.exports = class Letter {
   constructor(io, room) {
@@ -14,20 +21,11 @@ module.exports = class Letter {
     let sameAsLast = true;
     let shuffled;
     while (sameAsLast) {
-      shuffled = this.shuffleLetters();
+      shuffled = shuffleLetters();
       if (!this.last || (this.last && shuffled[0] !== this.last)) sameAsLast = false;
     }
     this.last = '';
     return shuffled;
-  }
-
-  shuffleLetters() {
-    const array = [...letters];
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
   }
 
   curr() {
@@ -43,8 +41,8 @@ module.exports = class Letter {
     if (!this.letters || this.letters.length === 0) {
       this.letters = this.newLetters();
     }
-    this.io.to(this.room).emit('letter', {letter: this.letters[0]});
-    this.last = this.letters[0];
+    this.io.to(this.room).emit('letter', { letter: this.letters[0] });
+    const [last] = this.letters;
+    this.last = last;
   }
-
-}
+};

@@ -1,21 +1,19 @@
-'use strict';
-
 const express = require('express');
 const path = require('path');
-const socket = require('socket.io');
+const socketio = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
+const locks = require('locks');
 const Timer = require('./classes/timer');
 const Letter = require('./classes/letter');
 const Categories = require('./classes/categories');
 const Answers = require('./classes/answers');
-const locks = require('locks');
 
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
-app.get('*', (req, res) => {                       
-  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));                               
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3001;
@@ -24,7 +22,7 @@ const server = app.listen(PORT, () => {
   console.log(`Serving on port ${PORT}`);
 });
 
-const io = socket(server);
+const io = socketio(server);
 
 const rooms = {};
 const TIME = 120;
@@ -33,7 +31,7 @@ io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
     const id = uuidv4();
     const room = {
-      id: id,
+      id,
       name: 'myroom',
       clients: {},
       timer: new Timer(TIME, io, id),

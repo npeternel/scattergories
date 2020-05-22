@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class Answers {
   constructor(io, room) {
     this.io = io;
@@ -32,10 +30,10 @@ module.exports = class Answers {
       for (const [client, answers] of Object.entries(this.answers)) {
         for (const [questionNumber, answer] of Object.entries(answers)) {
           if (results[questionNumber]) {
-            results[questionNumber][client] = {'answer': answer};
+            results[questionNumber][client] = { answer };
           } else {
             const tmp = {};
-            tmp[client] = {'answer': answer};
+            tmp[client] = { answer };
             results[questionNumber] = tmp;
           }
         }
@@ -45,26 +43,25 @@ module.exports = class Answers {
         const history = {};
         const clientsWithDuplicates = [];
         for (const [client, response] of Object.entries(responses)) {
-          if (response['answer']) {
-            const formattedResponse = response['answer'].trim().toLowerCase();
+          if (response.answer) {
+            const formattedResponse = response.answer.trim().toLowerCase();
             if (history[formattedResponse]) {
               clientsWithDuplicates.push(client);
               clientsWithDuplicates.push(history[formattedResponse]);
             } else {
               history[formattedResponse] = client;
             }
-            results[question][client]['type'] = 'original';
+            results[question][client].type = 'original';
           } else {
-            results[question][client]['type'] = 'blank';
+            results[question][client].type = 'blank';
           }
         }
         clientsWithDuplicates.forEach((client) => {
-          results[question][client]['type'] = 'duplicate';
+          results[question][client].type = 'duplicate';
         });
       }
       this.io.to(this.room).emit('answers:results', results);
       this.sent = true;
     }
   }
-
-}
+};
