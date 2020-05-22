@@ -114,16 +114,6 @@ class CategoryContainer extends React.Component {
     });
   }
 
-  handleEnter = (event, i) => {
-    console.log(event);
-    console.log(this.refs);
-    if (event.keyCode === 13) {
-      const form = event.target.form;
-      form.elements[i + 1].focus();
-      event.preventDefault();
-    }
-  }
-
   render() {
     return (
       <div>
@@ -132,7 +122,6 @@ class CategoryContainer extends React.Component {
           handleShuffle={this.shuffleCategories}
           handleShowAnswers={this.handleShowAnswers}
           handleValue={this.handleValue}
-          // handleEnter={this.handleEnter}
         />
       </div>
     )
