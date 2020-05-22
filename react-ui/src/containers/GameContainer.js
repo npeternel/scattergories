@@ -7,7 +7,9 @@ import PlayersContainer from './PlayersContainer';
 import io from 'socket.io-client';
 import { Redirect } from 'react-router-dom';
 
-const socket = io('localhost:3001');
+console.log(process.env.NODE_ENV);
+const server = process.env.NODE_ENV === 'development' ? 'localhost:3001' : '';
+const socket = io(server);
 
 class GameContainer extends React.Component {
 
@@ -20,7 +22,6 @@ class GameContainer extends React.Component {
       redirect: false
     }
   }
-
   componentDidMount() {
     const name = this.props.location.name;
     if (name) {
@@ -43,10 +44,10 @@ class GameContainer extends React.Component {
     return this.state.redirect ?
       <Redirect to='/'/>
       : <div>
-          <LetterContainer socket={socket}/>
-          <TimerContainer socket={socket}/>
-          <CategoryContainer name={this.state.name} socket={socket}/>
-          <PlayersContainer socket={socket} />
+          <LetterContainer socket={this.state.socket}/>
+          <TimerContainer socket={this.state.socket}/>
+          <CategoryContainer name={this.state.name} socket={this.state.socket}/>
+          <PlayersContainer socket={this.state.socket} />
         </div>
     }
 }
