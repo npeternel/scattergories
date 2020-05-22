@@ -6,7 +6,6 @@ class CategoryContainer extends React.Component {
     super(props);
 
     this.socket = props.socket;
-    this.name = props.name;
 
     this.state = {
       showAnswers: true,
@@ -72,7 +71,7 @@ class CategoryContainer extends React.Component {
       for (let i = 0; i < this.state.categories.length; i++) {
         if (!answerCopy[i]) answerCopy[i] = '';
       }
-      this.socket.emit('answers', {name: this.name, id: this.socket.id, answers: answerCopy });
+      this.socket.emit('answers', {name: this.props.name, id: this.socket.id, answers: answerCopy });
     });
     this.socket.on('answers:results', (results) => {
       this.setState({

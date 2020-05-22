@@ -8,6 +8,7 @@ const Timer = require('./classes/timer');
 const Letter = require('./classes/letter');
 const Categories = require('./classes/categories');
 const Answers = require('./classes/answers');
+const locks = require('locks');
 
 const app = express();
 
@@ -26,7 +27,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
-const TIME = 120;
+const TIME = 10;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
@@ -83,11 +84,16 @@ io.on('connection', (socket) => {
     room.timer.stop();
   });
   socket.on('answers', (data) => {
-    room.answers.submit(data);
+    const mutex = locks.createMutex();
+    mutex.lock(() => {
+      room.answers.submit(data);
+      console.log(`Received answers from ${data.name}`);
+      mutex.unlock();
+    });
     const interval = setInterval(() => {
-      if (room.answers.allSubmitted()) {
+      if (room.answers.allSubmitted(Object.values(room.clients))) {
         clearInterval(interval);
-        room.answers.merge(room.clients);
+        room.answers.merge(Object.values(room.clients));
       }
     },
     1000);
