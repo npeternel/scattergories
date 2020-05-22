@@ -5,7 +5,6 @@ class Results extends React.Component {
 
   render() {
     const result = this.props.result || {};
-    console.log(result);
     return (
       <div>
         {Object.keys(result).map((user, i) => 

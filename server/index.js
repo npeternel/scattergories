@@ -27,7 +27,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
-const TIME = 10;
+const TIME = 120;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
