@@ -1,22 +1,18 @@
 import React from 'react';
 import '../App.css';
-import LetterContainer from './LetterContainer';
-import TimerContainer from './TimerContainer';
-import CategoryContainer from './CategoryContainer';
-import PlayersContainer from './PlayersContainer';
-import io from 'socket.io-client';
+import GameContainer from './GameContainer';
+import MainContainer from './MainContainer';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-const socket = io('localhost:3001');
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <LetterContainer socket={socket}/>
-      <TimerContainer socket={socket}/>
-      <CategoryContainer name={'Nicki'} socket={socket}/>
-      <PlayersContainer socket={socket} />
+    <div>
+      <Router>
+        <Route exact path='/game' component={GameContainer} />
+        <Route exact path='/' component={MainContainer}/>
+      </Router>
     </div>
-  );
-}
+  )
+};
 
 export default App;

@@ -19,7 +19,6 @@ class CategoryContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.emit('join', this.name);
     this.socket.on('initial', (data) => {
       this.setState({
         showAnswers: this.state.showAnswers,
@@ -73,7 +72,6 @@ class CategoryContainer extends React.Component {
       for (let i = 0; i < this.state.categories.length; i++) {
         if (!answerCopy[i]) answerCopy[i] = '';
       }
-      console.log(answerCopy);
       this.socket.emit('answers', {name: this.name, id: this.socket.id, answers: answerCopy });
     });
     this.socket.on('answers:results', (results) => {
@@ -116,6 +114,16 @@ class CategoryContainer extends React.Component {
     });
   }
 
+  handleEnter = (event, i) => {
+    console.log(event);
+    console.log(this.refs);
+    if (event.keyCode === 13) {
+      const form = event.target.form;
+      form.elements[i + 1].focus();
+      event.preventDefault();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -124,6 +132,7 @@ class CategoryContainer extends React.Component {
           handleShuffle={this.shuffleCategories}
           handleShowAnswers={this.handleShowAnswers}
           handleValue={this.handleValue}
+          // handleEnter={this.handleEnter}
         />
       </div>
     )

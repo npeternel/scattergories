@@ -26,7 +26,10 @@ class Categories extends React.Component {
                   <Category key={`${i}+++`} title={category} i={i} state={this.props.state}/>
                   { end ?
                     <Results key={`${i}+`} result={results[i]}/> :
-                    <Answer key={`${i}++`} i={i} value={answers[i]} handleValue={this.props.handleValue} showAnswers={showAnswers}/>
+                    <Answer key={`${i}++`} i={i} value={answers[i]}
+                      handleValue={this.props.handleValue}
+                      // handleEnter={this.props.handleEnter}
+                      showAnswers={showAnswers}/>
                   }
                 </div>
               </li>

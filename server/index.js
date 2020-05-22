@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
     1000);
   });
   socket.on('disconnect', () => {
-    console.log('Client disconnected');
+    console.log(`${room.clients[socket.id]} left`);
     socket.leave(roomId);
     delete room.clients[socket.id];
     // if (io.sockets.adapter.rooms[id].sockets.length === 0) delete rooms[id];
