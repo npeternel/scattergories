@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const path = require('path');
 const socket = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const Timer = require('./classes/timer');
@@ -9,6 +10,12 @@ const Categories = require('./classes/categories');
 const Answers = require('./classes/answers');
 
 const app = express();
+
+app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
+
+app.get('*', (req, res) => {                       
+  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));                               
+});
 
 const PORT = process.env.PORT || 3001;
 
@@ -19,7 +26,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
-const TIME = 5;
+const TIME = 120;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
@@ -86,7 +93,7 @@ io.on('connection', (socket) => {
     1000);
   });
   socket.on('disconnect', () => {
-    console.log('Client disconnected');
+    console.log(`${room.clients[socket.id]} left`);
     socket.leave(roomId);
     delete room.clients[socket.id];
     // if (io.sockets.adapter.rooms[id].sockets.length === 0) delete rooms[id];

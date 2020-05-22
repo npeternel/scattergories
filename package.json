@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "build": "cd react-ui/ && npm run build"
+    "build": "cd react-ui/ && npm install && npm run build"
   },
   "repository": {
     "type": "git",
