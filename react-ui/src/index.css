@@ -40,3 +40,15 @@ code {
   text-align: right;
   background-color: grey;
 }
+
+.result-original {
+  color: green;
+}
+
+.result-duplicate {
+  color: red;
+}
+
+.result-blank {
+  color: grey;
+}

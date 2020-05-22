@@ -9,8 +9,7 @@ module.exports = class Answers {
   }
 
   // returns true if all answers were submitted from each client in the room
-  allSubmitted() {
-    const clients = this.clients();
+  allSubmitted(clients) {
     for (const client of clients) {
       if (!this.answers[client]) return false;
     }
@@ -18,38 +17,50 @@ module.exports = class Answers {
   }
 
   submit(data) {
-    this.answers[data.id] = data.answers;
-  }
-
-  clients() {
-    return Object.keys(this.io.sockets.adapter.rooms[this.room].sockets);
+    this.answers[data.name] = data.answers;
   }
 
   reset() {
-    this.answer = {};
+    this.answers = {};
     this.sent = false;
   }
 
-  merge(clients) {
+  merge() {
     if (!this.sent) {
       const results = {};
+      // create mapping of question number to {client: answer}
       for (const [client, answers] of Object.entries(this.answers)) {
-        for (const [number, answer] of Object.entries(answers)) {
-          if (results[number]) {
-            results[number][clients[client]] = answer;
+        for (const [questionNumber, answer] of Object.entries(answers)) {
+          if (results[questionNumber]) {
+            results[questionNumber][client] = {'answer': answer};
           } else {
             const tmp = {};
-            tmp[clients[client]] = answer;
-            results[number] = tmp;
+            tmp[client] = {'answer': answer};
+            results[questionNumber] = tmp;
           }
         }
       }
-      for (const [question, result] of Object.entries(results)) {
-        for (const client of this.clients()) {
-          if (!result[clients[client]]) {
-            results[question][clients[client]] = '';
+      // fill in results with empty values, duplicate answers, and client names
+      for (const [question, responses] of Object.entries(results)) {
+        const history = {};
+        const clientsWithDuplicates = [];
+        for (const [client, response] of Object.entries(responses)) {
+          if (response['answer']) {
+            const formattedResponse = response['answer'].trim().toLowerCase();
+            if (history[formattedResponse]) {
+              clientsWithDuplicates.push(client);
+              clientsWithDuplicates.push(history[formattedResponse]);
+            } else {
+              history[formattedResponse] = client;
+            }
+            results[question][client]['type'] = 'original';
+          } else {
+            results[question][client]['type'] = 'blank';
           }
         }
+        clientsWithDuplicates.forEach((client) => {
+          results[question][client]['type'] = 'duplicate';
+        });
       }
       this.io.to(this.room).emit('answers:results', results);
       this.sent = true;

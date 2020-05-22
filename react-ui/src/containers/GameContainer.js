@@ -22,6 +22,7 @@ class GameContainer extends React.Component {
       redirect: false
     }
   }
+
   componentDidMount() {
     const name = this.props.location.name;
     if (name) {

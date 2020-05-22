@@ -5,10 +5,11 @@ class Results extends React.Component {
 
   render() {
     const result = this.props.result || {};
+    console.log(result);
     return (
       <div>
         {Object.keys(result).map((user, i) => 
-        <p key={`${i}result`}>{user}: {result[user]}</p>
+        <p key={`${i}result`} className={`result-${result[user].type}`}>{user}: {result[user].answer}</p>
         )}
       </div>
     )

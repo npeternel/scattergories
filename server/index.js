@@ -26,7 +26,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
-const TIME = 120;
+const TIME = 10;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
@@ -83,11 +83,12 @@ io.on('connection', (socket) => {
     room.timer.stop();
   });
   socket.on('answers', (data) => {
+    console.log(`Received answers from ${data.name}`);
     room.answers.submit(data);
     const interval = setInterval(() => {
-      if (room.answers.allSubmitted()) {
+      if (room.answers.allSubmitted(Object.values(room.clients))) {
         clearInterval(interval);
-        room.answers.merge(room.clients);
+        room.answers.merge(Object.values(room.clients));
       }
     },
     1000);
