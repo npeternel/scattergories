@@ -10,6 +10,10 @@
     "dev": "nodemon server/index.js",
     "build": "cd react-ui/ && npm run build && cp -r build ../build"
   },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/npeternel/scattergories.git"
