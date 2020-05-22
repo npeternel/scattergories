@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const path = require('path');
 const socket = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const Timer = require('./classes/timer');
@@ -10,7 +11,7 @@ const Answers = require('./classes/answers');
 
 const app = express();
 
-app.use(express.static('build'));
+app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 const PORT = process.env.PORT || 3001;
 
