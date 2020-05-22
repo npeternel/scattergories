@@ -6,16 +6,16 @@ class Categories extends React.Component {
 
   constructor() {
     super();
-    this.inputs = [];
+    this.inputs = {};
   }
 
   handleEnter = (event, i) => {
     if (event.keyCode === 13 || event.keyCode === 40) {
-      this.inputs[(i+1) % this.inputs.length].focus();
+      this.inputs[(i+1) % Object.keys(this.inputs).length].focus();
       event.preventDefault();
     }
     if (event.keyCode === 38 && i !== 0) {
-      this.inputs[(i-1) % this.inputs.length].focus();
+      this.inputs[(i-1) % Object.keys(this.inputs).length].focus();
       event.preventDefault();
     }
   }
@@ -42,7 +42,7 @@ class Categories extends React.Component {
                   { end ?
                     <Results key={`${i}+`} result={results[i]}/> :
                     <input onKeyDown={(event) => this.handleEnter(event, i)}
-                    ref={(input) => this.inputs.push(input)} className={showAnswers ? "category-input" : "category-input-hidden"}
+                    ref={(input) => this.inputs[i] = input} className={showAnswers ? "category-input" : "category-input-hidden"}
                     value={answers[i] || ''} onChange={(event) => this.props.handleValue(event, i)}>
                     </input>
                   }
