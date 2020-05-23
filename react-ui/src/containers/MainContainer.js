@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import '../index.css';
 import HomeModal from '../components/HomeModal';
 
 class MainContainer extends React.Component {
@@ -36,14 +37,14 @@ class MainContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="modal">
         { this.state.show ?
           <HomeModal
             input={this.state.input}
             handleValue={this.handleValue}
             handleClose={this.handleClose}
             handleShow={this.handleShow}/>
-        : <button onClick={this.handleShow}>
+        : <button className="join-btn" onClick={this.handleShow}>
           Join Room
             </button>
         }

@@ -41,6 +41,15 @@ code {
   background-color: black;
 }
 
+.join-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.modal {
+  
+}
+
 .result-original {
   color: green;
 }
