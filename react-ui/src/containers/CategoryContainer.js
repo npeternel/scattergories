@@ -18,7 +18,7 @@ class CategoryContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('initial', (data) => {
+    this.socket.on('room', (data) => {
       this.setState({
         showAnswers: this.state.showAnswers,
         showCategories: this.state.showCategories,

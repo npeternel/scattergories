@@ -12,7 +12,7 @@ class LetterContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('initial', (data) => {
+    this.socket.on('room', (data) => {
       this.setState({
         letter: data.letter
       });

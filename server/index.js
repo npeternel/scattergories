@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
       console.log(`New client ${name}`);
       socket.join(roomId);
       room.clients[socket.id] = name;
-      io.to(roomId).emit('initial', {
+      io.to(roomId).emit('room', {
         clients: Object.values(room.clients),
         time: room.timer.curr(),
         letter: room.letter.curr(),
@@ -102,6 +102,12 @@ io.on('connection', (socket) => {
     console.log(`${room.clients[socket.id]} left`);
     socket.leave(roomId);
     delete room.clients[socket.id];
+    io.to(roomId).emit('room', {
+      clients: Object.values(room.clients),
+      time: room.timer.curr(),
+      letter: room.letter.curr(),
+      categories: room.categories.curr()
+    });
     // if (io.sockets.adapter.rooms[id].sockets.length === 0) delete rooms[id];
   });
 });

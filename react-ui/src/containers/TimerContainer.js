@@ -14,8 +14,15 @@ class TimerContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('initial', (data) => {
+    this.socket.on('room', (data) => {
       this.setTimer(data.time, this.state.running);
+    });
+    this.socket.on('game:start', () => {
+      this.setState({
+        time: this.state.time,
+        running: this.state.running,
+        ended: false
+      });
     });
     this.socket.on('time', (data) => {
       this.setTimer(data.time, data.running);
@@ -52,11 +59,6 @@ class TimerContainer extends React.Component {
 
   restartGame = () => {
     this.socket.emit('game:restart');
-    this.setState({
-      time: this.state.time,
-      running: this.state.running,
-      ended: false
-    });
   }
 
   render() {
