@@ -37,7 +37,8 @@ class MainContainer extends React.Component {
 
   render() {
     return (
-      <div className="modal">
+      <div>
+        <h1 className="title">Scattergories</h1>
         { this.state.show ?
           <HomeModal
             input={this.state.input}
@@ -45,8 +46,8 @@ class MainContainer extends React.Component {
             handleClose={this.handleClose}
             handleShow={this.handleShow}/>
         : <button className="join-btn" onClick={this.handleShow}>
-          Join Room
-            </button>
+          Join Game
+          </button>
         }
       </div>
     );
