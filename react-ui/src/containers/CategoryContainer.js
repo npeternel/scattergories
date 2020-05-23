@@ -115,14 +115,12 @@ class CategoryContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <Categories
-          state={this.state}
-          handleShuffle={this.shuffleCategories}
-          handleShowAnswers={this.handleShowAnswers}
-          handleValue={this.handleValue}
-        />
-      </div>
+      <Categories
+        state={this.state}
+        handleShuffle={this.shuffleCategories}
+        handleShowAnswers={this.handleShowAnswers}
+        handleValue={this.handleValue}
+      />
     )
   }
 }

@@ -9,19 +9,20 @@ class Timer extends React.Component {
       ended
     } = this.props.state;
     return (
-      <div>
+      <div className="timer">
+        <h4>Time</h4>
         <h1>{time}</h1>
         {ended ? null :
           <button onClick={() => this.props.handleClick()}>
-            {running ? 'Pause' : 'Start'}
+            {running ? 'Pause Game' : 'Start Game'}
           </button>
         }
         {ended ? 
           <button onClick={() => this.props.handleRestart()}>
-            Restart
+            New Game
           </button> :
           <button onClick={() => this.props.handleReset()}>
-            Reset
+            Reset Timer
           </button>
   }
       </div>

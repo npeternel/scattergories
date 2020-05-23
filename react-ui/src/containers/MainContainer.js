@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import '../index.css';
 import HomeModal from '../components/HomeModal';
 
 class MainContainer extends React.Component {
@@ -37,15 +37,16 @@ class MainContainer extends React.Component {
   render() {
     return (
       <div>
+        <h1 className="title">Scattergories</h1>
         { this.state.show ?
           <HomeModal
             input={this.state.input}
             handleValue={this.handleValue}
             handleClose={this.handleClose}
             handleShow={this.handleShow}/>
-        : <button onClick={this.handleShow}>
-          Join Room
-            </button>
+        : <button className="join-btn" onClick={this.handleShow}>
+          Join Game
+          </button>
         }
       </div>
     );

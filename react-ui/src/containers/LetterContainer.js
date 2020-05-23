@@ -1,5 +1,4 @@
 import React from 'react';
-import Letter from '../components/Letter';
 
 class LetterContainer extends React.Component {
   constructor(props) {
@@ -30,8 +29,12 @@ class LetterContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <Letter letter={this.state.letter} handleClick={this.shuffleLetter}/>
+      <div className="letter">
+        <h4>Letter</h4>
+        <h1>{this.state.letter}</h1>
+        <button onClick={() => this.shuffleLetter()}>
+          Shuffle
+        </button>
       </div>
     )
   }
