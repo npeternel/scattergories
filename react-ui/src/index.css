@@ -91,13 +91,6 @@ h4 {
   margin: 2px;
 }
 
-.category-input-hidden {
-  display: inline-block;
-  margin: 0 auto;
-  text-align: right;
-  background-color: black;
-}
-
 .title {
   position: fixed;
   top: 25%;
