@@ -23,7 +23,6 @@ class Categories extends React.Component {
   render() {
     const {
       categories,
-      showAnswers,
       answers,
       results,
       end
@@ -45,7 +44,7 @@ class Categories extends React.Component {
                   { end ?
                     <Results key={`${i}+`} result={results[i]}/> :
                     <input onKeyDown={(event) => this.handleEnter(event, i)}
-                    ref={(input) => this.inputs[i] = input} className={showAnswers ? "category-input" : "category-input-hidden"}
+                    ref={(input) => this.inputs[i] = input} className="category-input"
                     value={answers[i] || ''} onChange={(event) => this.props.handleValue(event, i)}>
                     </input>
                   }
@@ -54,11 +53,6 @@ class Categories extends React.Component {
             )
           })}
           </ol>
-        </div>
-        <div className="shuffle-btn">
-          <button onClick={() => this.props.handleShowAnswers()}>
-            {showAnswers ? 'Hide Your Answers' : 'Show Your Answers' }
-          </button>
         </div>
       </div>
     )
