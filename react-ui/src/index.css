@@ -104,12 +104,14 @@ h4 {
   float: left;
   position: relative;
   top: 0;
-  left: 20%;
+  left: 15%;
+  width: 20%;
 }
 
 .mid {
-  clear: both;
-  position: fixed;
+  /* clear: both; */
+  /* float: left; */
+  position: absolute;
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
