@@ -55,18 +55,12 @@ h4 {
 }
 
 .categories {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  float: left;
-  clear: both;
+  position: relative;
+  margin: 5px;
 }
 
 .category-list {
-  float: left;
-  clear: both;
-  display: block;
+  position: relative;
 }
 
 .category-div {
@@ -107,9 +101,18 @@ h4 {
 }
 
 .letter {
-  position: absolute;
+  float: left;
+  position: relative;
   top: 0;
-  left: 30%;
+  left: 20%;
+}
+
+.mid {
+  clear: both;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .modal {
@@ -151,6 +154,10 @@ h4 {
   right: 25px;
 }
 
+.results {
+  margin: 2px;
+}
+
 .result-original {
   color: green;
 }
@@ -168,8 +175,10 @@ h4 {
 }
 
 .timer {
-  position: fixed;
+  position: relative;
   top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
+}
+
+.timer-btn {
+  text-align: center;
 }

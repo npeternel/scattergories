@@ -31,7 +31,7 @@ class LetterContainer extends React.Component {
     return (
       <div className="letter">
         <h4>Letter</h4>
-        <h1>{this.state.letter}</h1>
+        <h1 style={{'font-size': '100px'}}>{this.state.letter}</h1>
         <button onClick={() => this.shuffleLetter()}>
           Shuffle
         </button>

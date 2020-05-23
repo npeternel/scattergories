@@ -47,7 +47,7 @@ class GameContainer extends React.Component {
       :
       <div>
         <LetterContainer socket={socket}/>
-        <div style={{'clear': 'both'}}>
+        <div className="mid">
         <TimerContainer socket={socket}/>
         <CategoryContainer name={this.state.name} socket={socket}/>
         </div>
