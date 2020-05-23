@@ -29,10 +29,13 @@ class Categories extends React.Component {
       end
     } = this.props.state;
     return (
-      <div>
+      <div className="categories">
+        <div className="shuffle-btn">
         <button onClick={() => this.props.handleShuffle()}>
           Shuffle Categories
         </button>
+        </div>
+        <div className="category-list">
           <ol>
           {categories.map((category, i) => {
             return (
@@ -51,9 +54,12 @@ class Categories extends React.Component {
             )
           })}
           </ol>
-        <button onClick={() => this.props.handleShowAnswers()}>
-          {showAnswers ? 'Cover Answers' : 'Show Answers' }
-        </button>
+        </div>
+        <div className="shuffle-btn">
+          <button onClick={() => this.props.handleShowAnswers()}>
+            {showAnswers ? 'Hide Your Answers' : 'Show Your Answers' }
+          </button>
+        </div>
       </div>
     )
   }

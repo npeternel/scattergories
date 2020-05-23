@@ -1,5 +1,6 @@
 import React from 'react';
 import Players from '../components/Players';
+import '../index.css';
 
 class PlayersContainer extends React.Component {
   constructor(props) {
@@ -22,8 +23,8 @@ class PlayersContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>Players</h2>
+      <div className="players">
+        <h3>Players</h3>
         <Players players={this.state.players} />
       </div>
     )

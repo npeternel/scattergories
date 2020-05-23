@@ -1,5 +1,4 @@
 import React from 'react';
-import '../App.css';
 import '../index.css';
 import HomeModal from '../components/HomeModal';
 

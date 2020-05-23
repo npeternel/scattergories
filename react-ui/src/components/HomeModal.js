@@ -11,7 +11,7 @@ class HomeModal extends React.Component {
           <button style={{float: 'right'}} onClick={this.props.handleClose}>
             X
           </button>
-          <h3 style={{'text-align': 'center'}}>Enter Name</h3>
+          <h3>Enter Name</h3>
           <div style={{'text-align': 'center'}}>
             <input style={{'margin': '1px 5px'}}value={this.props.input} onChange={(event) => this.props.handleValue(event)}>
             </input>

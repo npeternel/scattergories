@@ -44,12 +44,15 @@ class GameContainer extends React.Component {
   render() {
     return this.state.redirect ?
       <Redirect to='/'/>
-      : <div>
-          <LetterContainer socket={socket}/>
-          <TimerContainer socket={socket}/>
-          <CategoryContainer name={this.state.name} socket={socket}/>
-          <PlayersContainer socket={socket} />
+      :
+      <div>
+        <LetterContainer socket={socket}/>
+        <div style={{'clear': 'both'}}>
+        <TimerContainer socket={socket}/>
+        <CategoryContainer name={this.state.name} socket={socket}/>
         </div>
+        <PlayersContainer socket={socket} />
+      </div>
     }
 }
 
