@@ -25,7 +25,7 @@ module.exports.Answers = class Answers {
     this.sent = false;
   }
 
-  merge() {
+  merge(letter) {
     if (!this.sent) {
       const results = {};
       // create mapping of question number to {client: answer}
@@ -40,7 +40,7 @@ module.exports.Answers = class Answers {
           }
         }
       }
-      const resultsWithTypes = module.exports.determineResultTypes(results);
+      const resultsWithTypes = module.exports.determineResultTypes(results, letter);
       this.io.to(this.room).emit('answers:results', resultsWithTypes);
       this.sent = true;
     }
@@ -48,21 +48,28 @@ module.exports.Answers = class Answers {
 
 }
 
-module.exports.determineResultTypes = (results) => {
+module.exports.determineResultTypes = (results, letter) => {
   // fill in results with empty values, duplicate answers, and client names
+  console.log(`Checking letter ${letter}`);
+  const l = letter.toLowerCase();
   for (const [question, responses] of Object.entries(results)) {
     const history = {};
     const clientsWithDuplicates = [];
     for (const [client, response] of Object.entries(responses)) {
       if (response['answer']) {
         const formattedResponse = formatResponse(response['answer']);
-        if (history[formattedResponse]) {
-          clientsWithDuplicates.push(client);
-          clientsWithDuplicates.push(history[formattedResponse]);
+        if (letter && !formattedResponse.startsWith(l)) {
+          console.log(`${formattedResponse} result of ${formattedResponse.startsWith(l)}`);
+          results[question][client]['type'] = 'incorrect';
         } else {
-          history[formattedResponse] = client;
+          if (history[formattedResponse]) {
+            clientsWithDuplicates.push(client);
+            clientsWithDuplicates.push(history[formattedResponse]);
+          } else {
+            history[formattedResponse] = client;
+          }
+          results[question][client]['type'] = 'original';
         }
-        results[question][client]['type'] = 'original';
       } else {
         results[question][client]['type'] = 'blank';
       }

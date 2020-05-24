@@ -27,7 +27,7 @@ const server = app.listen(PORT, () => {
 const io = socket(server);
 
 const rooms = {};
-const TIME = 120;
+const TIME = process.env.NODE_ENV === 'production' ? 120 : 10;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
@@ -84,16 +84,18 @@ io.on('connection', (socket) => {
     room.timer.stop();
   });
   socket.on('answers', (data) => {
-    const mutex = locks.createMutex();
-    mutex.lock(() => {
-      room.answers.submit(data);
-      console.log(`Received answers from ${data.name}`);
-      mutex.unlock();
-    });
+    if (data.name) {
+      const mutex = locks.createMutex();
+      mutex.lock(() => {
+        room.answers.submit(data);
+        console.log(`Received answers from ${data.name}`);
+        mutex.unlock();
+      });
+    }
     const interval = setInterval(() => {
       if (room.answers.allSubmitted(Object.values(room.clients))) {
         clearInterval(interval);
-        room.answers.merge(Object.values(room.clients));
+        room.answers.merge(room.letter.curr());
       }
     },
     1000);

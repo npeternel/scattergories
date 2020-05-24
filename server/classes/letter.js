@@ -34,7 +34,6 @@ module.exports = class Letter {
     if (!this.letters || this.letters.length === 0) {
       this.letters = this.newLetters();
     }
-    // this.io.to(this.room).emit('letter', {letter: this.letters[0]});
     return this.letters[0];
   }
 
