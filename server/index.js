@@ -7,7 +7,6 @@ const Timer = require('./classes/timer');
 const Letter = require('./classes/letter');
 const Categories = require('./classes/categories');
 const { Answers } = require('./classes/answers');
-const locks = require('locks');
 
 const app = express();
 

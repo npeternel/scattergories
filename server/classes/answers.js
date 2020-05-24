@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports.Answers = class Answers {
   constructor(io, room) {
     this.io = io;
@@ -45,10 +43,14 @@ module.exports.Answers = class Answers {
       this.sent = true;
     }
   }
+};
 
+function formatResponse(response) {
+  return response.trim().toLowerCase().replace(/[^0-9a-z]/gi, '');
 }
 
-module.exports.determineResultTypes = (results, letter) => {
+module.exports.determineResultTypes = (resultsIn, letter) => {
+  const results = resultsIn;
   // fill in results with empty values, duplicate answers, and client names
   console.log(`Checking letter ${letter}`);
   const l = letter ? letter.toLowerCase() : '';
@@ -78,8 +80,4 @@ module.exports.determineResultTypes = (results, letter) => {
     });
   }
   return results;
-}
-
-function formatResponse(response) {
-  return response.trim().toLowerCase().replace(/[^0-9a-z]/gi, '');
-}
+};
