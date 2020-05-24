@@ -15,7 +15,6 @@ class GameContainer extends React.Component {
     super();
 
     this.state = {
-      socket: {},
       name: '',
       redirect: false
     }
@@ -25,14 +24,12 @@ class GameContainer extends React.Component {
     const name = this.props.location.name;
     if (name) {
       this.setState({
-        socket: socket,
         name: name,
         redirect: false
       });
       socket.emit('join', name);
     } else {
       this.setState({
-        socket: {},
         name: '',
         redirect: true
       });
