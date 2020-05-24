@@ -3,7 +3,6 @@ import '../index.css';
 import HomeModal from '../components/HomeModal';
 
 class MainContainer extends React.Component {
-
   constructor() {
     super();
 
@@ -14,40 +13,48 @@ class MainContainer extends React.Component {
   }
 
   handleClose = () => {
+    const { input } = this.state;
     this.setState({
       show: false,
-      input: this.state.input
-    })
+      input
+    });
   }
 
   handleShow = () => {
+    const { input } = this.state;
     this.setState({
       show: true,
-      input: this.state.input
-    })
+      input
+    });
   }
 
   handleValue = (event) => {
+    const { show } = this.state;
     this.setState({
-      show: this.state.show,
+      show,
       input: event.target.value
     });
   }
 
   render() {
+    const { show, input } = this.state;
     return (
       <div>
         <h1 className="title">Scattergories</h1>
-        { this.state.show ?
-          <HomeModal
-            input={this.state.input}
-            handleValue={this.handleValue}
-            handleClose={this.handleClose}
-            handleShow={this.handleShow}/>
-        : <button className="join-btn" onClick={this.handleShow}>
-          Join Game
-          </button>
-        }
+        { show
+          ? (
+            <HomeModal
+              input={input}
+              handleValue={this.handleValue}
+              handleClose={this.handleClose}
+              handleShow={this.handleShow}
+            />
+          )
+          : (
+            <button type="button" className="join-btn" onClick={this.handleShow}>
+              Join Game
+            </button>
+          )}
       </div>
     );
   }

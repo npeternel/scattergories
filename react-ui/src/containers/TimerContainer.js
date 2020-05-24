@@ -15,11 +15,12 @@ class TimerContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { running, time } = this.state;
     this.socket.on('room', (data) => {
+      const { running } = this.state;
       this.setTimer(data.time, running);
     });
     this.socket.on('game:start', () => {
+      const { running, time } = this.state;
       this.setState({
         time,
         running,
@@ -30,6 +31,7 @@ class TimerContainer extends React.Component {
       this.setTimer(data.time, data.running);
     });
     this.socket.on('time:end', () => {
+      const { time } = this.state;
       this.setState({
         time,
         running: false,
@@ -65,9 +67,12 @@ class TimerContainer extends React.Component {
   }
 
   render() {
+    const { running, time, ended } = this.state;
     return (
       <Timer
-        state={this.state}
+        running={running}
+        time={time}
+        ended={ended}
         handleClick={this.toggleTimer}
         handleReset={this.resetTimer}
         handleRestart={this.restartGame}

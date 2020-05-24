@@ -1,16 +1,20 @@
 import React from 'react';
 import '../index.css';
+import PropTypes from 'prop-types';
 
-class Category extends React.Component {
+const Category = (props) => {
+  const {
+    showCategories,
+    title
+  } = props;
+  return (
+    <p className={showCategories ? 'category-text' : 'category-text-hidden'}>{title}</p>
+  );
+};
 
-  render() {
-    const {
-      showCategories,
-    } = this.props.state;
-    return (
-      <p className={showCategories ? "category-text" : "category-text-hidden"}>{this.props.title}</p>
-    )
-  }
-}
+Category.propTypes = {
+  showCategories: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired
+};
 
 export default Category;

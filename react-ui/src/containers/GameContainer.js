@@ -1,30 +1,30 @@
 import React from 'react';
+import io from 'socket.io-client';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import LetterContainer from './LetterContainer';
 import TimerContainer from './TimerContainer';
 import CategoryContainer from './CategoryContainer';
 import PlayersContainer from './PlayersContainer';
-import io from 'socket.io-client';
-import { Redirect } from 'react-router-dom';
 
 const server = process.env.NODE_ENV === 'development' ? 'localhost:3001' : '';
 const socket = io(server);
 
 class GameContainer extends React.Component {
-
   constructor() {
     super();
 
     this.state = {
       name: '',
       redirect: false
-    }
+    };
   }
 
   componentDidMount() {
-    const name = this.props.location.name;
+    const { location: name } = this.props;
     if (name) {
       this.setState({
-        name: name,
+        name,
         redirect: false
       });
       socket.emit('join', name);
@@ -37,18 +37,24 @@ class GameContainer extends React.Component {
   }
 
   render() {
-    return this.state.redirect ?
-      <Redirect to='/'/>
-      :
-      <div>
-        <LetterContainer socket={socket}/>
-        <div className="mid">
-        <TimerContainer socket={socket}/>
-        <CategoryContainer name={this.state.name} socket={socket}/>
+    const { name, redirect } = this.state;
+    return redirect
+      ? <Redirect to="/" />
+      : (
+        <div>
+          <LetterContainer socket={socket} />
+          <div className="mid">
+            <TimerContainer socket={socket} />
+            <CategoryContainer name={name} socket={socket} />
+          </div>
+          <PlayersContainer socket={socket} />
         </div>
-        <PlayersContainer socket={socket} />
-      </div>
-    }
+      );
+  }
 }
+
+GameContainer.propTypes = {
+  location: PropTypes.isRequired
+};
 
 export default GameContainer;
