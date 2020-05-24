@@ -12,7 +12,7 @@ code {
 
 a, a:visited {
   text-decoration: none;
-  color: orange;
+  color: black;
 }
 
 a:hover {
@@ -89,7 +89,7 @@ h4 {
   position: fixed;
   top: 25%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -25%);
 }
 
 .join-btn {

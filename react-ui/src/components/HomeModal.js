@@ -13,9 +13,11 @@ class HomeModal extends React.Component {
           </button>
           <h3>Enter Name</h3>
           <div style={{'textAlign': 'center'}}>
-            <input style={{'margin': '1px 5px'}}value={this.props.input} onChange={(event) => this.props.handleValue(event)}>
+            <input autoFocus style={{'margin': '1px 5px'}}value={this.props.input} onChange={(event) => this.props.handleValue(event)}>
             </input>
-            <Link to={{pathname:'/game', name:this.props.input}}>Go</Link>
+            <Link to={{pathname:'/game', name:this.props.input}}>
+              <button>Go</button>
+            </Link>
           </div>
         </div>
       </div>
