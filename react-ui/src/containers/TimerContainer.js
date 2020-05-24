@@ -6,6 +6,7 @@ class TimerContainer extends React.Component {
     super(props);
 
     this.socket = props.socket;
+    this.start = new Audio('/start.mp3');
     this.state = {
       time: 120,
       running: false,
@@ -25,6 +26,7 @@ class TimerContainer extends React.Component {
       });
     });
     this.socket.on('time', (data) => {
+      this.start.play();
       this.setTimer(data.time, data.running);
     });
     this.socket.on('time:end', () => {
