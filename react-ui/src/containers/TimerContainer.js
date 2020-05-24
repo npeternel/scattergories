@@ -53,6 +53,14 @@ class TimerContainer extends React.Component {
     }
   }
 
+  addTime = () => {
+    this.socket.emit('time:add');
+  }
+
+  subTime = () => {
+    this.socket.emit('time:sub');
+  }
+
   resetTimer = () => {
     this.socket.emit('timer:reset');
   }
@@ -63,7 +71,12 @@ class TimerContainer extends React.Component {
 
   render() {
     return (
-      <Timer state={this.state} handleClick={this.toggleTimer} handleReset={this.resetTimer} handleRestart={this.restartGame}/>
+      <Timer state={this.state}
+        handleClick={this.toggleTimer}
+        handleReset={this.resetTimer}
+        handleRestart={this.restartGame}
+        handleAddTime={this.addTime}
+        handleSubTime={this.subTime}/>
     )
   }
 }

@@ -77,6 +77,9 @@ io.on('connection', (socket) => {
   socket.on('timer:start', () => {
     room.timer.start();
   });
+  socket.on('timer:change', ({ newTime }) => {
+    room.timer.change(newTime);
+  });
   socket.on('timer:reset', () => {
     room.timer.reset();
   });

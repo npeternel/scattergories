@@ -21,6 +21,13 @@ module.exports = class Timer {
     this.interval = setInterval(() => this.tick(), 1000);
   }
 
+  change(newTime) {
+    if (newTime <= 0) return;
+    console.log(`Changing timer to ${newTime}`);
+    this.duration = newTime;
+    this.reset();
+  }
+
   tick() {
     this.time--;
     this.io.to(this.room).emit('time', {time: this.time, running: true});
