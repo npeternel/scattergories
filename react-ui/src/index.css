@@ -164,7 +164,7 @@ h4 {
   color: green;
 }
 
-.result-duplicate {
+.result-duplicate, .result-incorrect {
   color: red;
 }
 

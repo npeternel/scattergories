@@ -99,5 +99,38 @@ test('[classes/answers] determineResultTypes', (assert) => {
     }
   }, 'determines duplicate types');
 
+  const startsWithWrongLetter = {
+    '0': {
+      'Aang': { answer: 'Air' },
+      'Toph': { answer: 'earth' }
+    },
+    '1': {
+      'Aang': { answer: 'avatar' },
+      'Toph': { answer: 'aang' }
+    },
+    '2': {
+      'Aang': { answer: '\'Avatar' },
+      'Toph': { answer: 'a-va-tar' }
+    },
+  };
+
+  actual = determineResultTypes(startsWithWrongLetter, 'A');
+
+  assert.deepEquals(actual, {
+    '0': {
+      'Aang': { answer: 'Air', type: 'original' },
+      'Toph': { answer: 'earth', type: 'incorrect' },
+    },
+    '1': {
+      'Aang': { answer: 'avatar', type: 'original' },
+      'Toph': { answer: 'aang', type: 'original' },
+    },
+    '2': {
+      'Aang': { answer: '\'Avatar', type: 'duplicate' },
+      'Toph': { answer: 'a-va-tar', type: 'duplicate' },
+    }
+  }, 'determines wrong starting letter');
+
+
   assert.end();
 });
