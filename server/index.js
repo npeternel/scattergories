@@ -6,7 +6,8 @@ const locks = require('locks');
 const Timer = require('./classes/timer');
 const Letter = require('./classes/letter');
 const Categories = require('./classes/categories');
-const Answers = require('./classes/answers');
+const { Answers } = require('./classes/answers');
+const locks = require('locks');
 
 const app = express();
 
@@ -25,7 +26,7 @@ const server = app.listen(PORT, () => {
 const io = socketio(server);
 
 const rooms = {};
-const TIME = 120;
+const TIME = process.env.NODE_ENV === 'production' ? 120 : 10;
 
 io.on('connection', (socket) => {
   if (Object.keys(rooms).length === 0) {
@@ -49,7 +50,7 @@ io.on('connection', (socket) => {
       console.log(`New client ${name}`);
       socket.join(roomId);
       room.clients[socket.id] = name;
-      io.to(roomId).emit('initial', {
+      io.to(roomId).emit('room', {
         clients: Object.values(room.clients),
         time: room.timer.curr(),
         letter: room.letter.curr(),
@@ -82,16 +83,18 @@ io.on('connection', (socket) => {
     room.timer.stop();
   });
   socket.on('answers', (data) => {
-    const mutex = locks.createMutex();
-    mutex.lock(() => {
-      room.answers.submit(data);
-      console.log(`Received answers from ${data.name}`);
-      mutex.unlock();
-    });
+    if (data.name) {
+      const mutex = locks.createMutex();
+      mutex.lock(() => {
+        room.answers.submit(data);
+        console.log(`Received answers from ${data.name}`);
+        mutex.unlock();
+      });
+    }
     const interval = setInterval(() => {
       if (room.answers.allSubmitted(Object.values(room.clients))) {
         clearInterval(interval);
-        room.answers.merge(Object.values(room.clients));
+        room.answers.merge(room.letter.curr());
       }
     },
     1000);
@@ -100,6 +103,12 @@ io.on('connection', (socket) => {
     console.log(`${room.clients[socket.id]} left`);
     socket.leave(roomId);
     delete room.clients[socket.id];
+    io.to(roomId).emit('room', {
+      clients: Object.values(room.clients),
+      time: room.timer.curr(),
+      letter: room.letter.curr(),
+      categories: room.categories.curr()
+    });
     // if (io.sockets.adapter.rooms[id].sockets.length === 0) delete rooms[id];
   });
 });

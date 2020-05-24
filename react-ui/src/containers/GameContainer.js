@@ -1,5 +1,4 @@
 import React from 'react';
-import '../App.css';
 import LetterContainer from './LetterContainer';
 import TimerContainer from './TimerContainer';
 import CategoryContainer from './CategoryContainer';
@@ -16,7 +15,6 @@ class GameContainer extends React.Component {
     super();
 
     this.state = {
-      socket: {},
       name: '',
       redirect: false
     }
@@ -26,14 +24,12 @@ class GameContainer extends React.Component {
     const name = this.props.location.name;
     if (name) {
       this.setState({
-        socket: socket,
         name: name,
         redirect: false
       });
       socket.emit('join', name);
     } else {
       this.setState({
-        socket: {},
         name: '',
         redirect: true
       });
@@ -43,12 +39,15 @@ class GameContainer extends React.Component {
   render() {
     return this.state.redirect ?
       <Redirect to='/'/>
-      : <div>
-          <LetterContainer socket={socket}/>
-          <TimerContainer socket={socket}/>
-          <CategoryContainer name={this.state.name} socket={socket}/>
-          <PlayersContainer socket={socket} />
+      :
+      <div>
+        <LetterContainer socket={socket}/>
+        <div className="mid">
+        <TimerContainer socket={socket}/>
+        <CategoryContainer name={this.state.name} socket={socket}/>
         </div>
+        <PlayersContainer socket={socket} />
+      </div>
     }
 }
 

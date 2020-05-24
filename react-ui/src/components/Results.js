@@ -6,7 +6,7 @@ class Results extends React.Component {
   render() {
     const result = this.props.result || {};
     return (
-      <div>
+      <div className="results">
         {Object.keys(result).map((user, i) => 
         <p key={`${i}result`} className={`result-${result[user].type}`}>{user}: {result[user].answer}</p>
         )}

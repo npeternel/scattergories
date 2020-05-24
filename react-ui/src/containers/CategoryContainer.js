@@ -8,7 +8,6 @@ class CategoryContainer extends React.Component {
     this.socket = props.socket;
 
     this.state = {
-      showAnswers: true,
       showCategories: false,
       answers: {},
       categories: [],
@@ -18,9 +17,8 @@ class CategoryContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('initial', (data) => {
+    this.socket.on('room', (data) => {
       this.setState({
-        showAnswers: this.state.showAnswers,
         showCategories: this.state.showCategories,
         answers: {...this.state.answers},
         categories: data.categories,
@@ -30,7 +28,6 @@ class CategoryContainer extends React.Component {
     });
     this.socket.on('categories', (data) => {
       this.setState({
-        showAnswers: this.state.showAnswers,
         showCategories: false,
         answers: {...this.state.answers},
         categories: data.categories,
@@ -40,7 +37,6 @@ class CategoryContainer extends React.Component {
     });
     this.socket.on('time', (data) => {
       this.setState({
-        showAnswers: this.state.showAnswers,
         showCategories: data.running,
         answers: {...this.state.answers},
         categories: [...this.state.categories],
@@ -50,7 +46,6 @@ class CategoryContainer extends React.Component {
     });
     this.socket.on('game:start', () => {
       this.setState({
-        showAnswers: true,
         showCategories: true,
         answers: {},
         categories: [...this.state.categories],
@@ -60,7 +55,6 @@ class CategoryContainer extends React.Component {
     });
     this.socket.on('time:end', () => {
       this.setState({
-        showAnswers: this.state.showAnswers,
         showCategories: true,
         answers: {...this.state.answers},
         categories: [...this.state.categories],
@@ -75,7 +69,6 @@ class CategoryContainer extends React.Component {
     });
     this.socket.on('answers:results', (results) => {
       this.setState({
-        showAnswers: this.state.showAnswers,
         showCategories: this.state.showCategories,
         answers: {...this.state.answers},
         categories: [...this.state.categories],
@@ -91,7 +84,6 @@ class CategoryContainer extends React.Component {
 
   handleShowAnswers = () => {
     this.setState({
-      showAnswers: !this.state.showAnswers,
       showCategories: this.state.showCategories,
       answers: {...this.state.answers},
       categories: [...this.state.categories],
@@ -104,7 +96,6 @@ class CategoryContainer extends React.Component {
     const tmp = {...this.state.answers};
     tmp[i] = event.target.value;
     this.setState({
-      showAnswers: this.state.showAnswers,
       showCategories: this.state.showCategories,
       answers: tmp,
       categories: [...this.state.categories],
@@ -115,14 +106,11 @@ class CategoryContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <Categories
-          state={this.state}
-          handleShuffle={this.shuffleCategories}
-          handleShowAnswers={this.handleShowAnswers}
-          handleValue={this.handleValue}
-        />
-      </div>
+      <Categories
+        state={this.state}
+        handleShuffle={this.shuffleCategories}
+        handleValue={this.handleValue}
+      />
     )
   }
 }

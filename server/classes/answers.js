@@ -1,4 +1,6 @@
-module.exports = class Answers {
+'use strict';
+
+module.exports.Answers = class Answers {
   constructor(io, room) {
     this.io = io;
     this.room = room;
@@ -23,7 +25,7 @@ module.exports = class Answers {
     this.sent = false;
   }
 
-  merge() {
+  merge(letter) {
     if (!this.sent) {
       const results = {};
       // create mapping of question number to {client: answer}
@@ -38,30 +40,46 @@ module.exports = class Answers {
           }
         }
       }
-      // fill in results with empty values, duplicate answers, and client names
-      for (const [question, responses] of Object.entries(results)) {
-        const history = {};
-        const clientsWithDuplicates = [];
-        for (const [client, response] of Object.entries(responses)) {
-          if (response.answer) {
-            const formattedResponse = response.answer.trim().toLowerCase();
-            if (history[formattedResponse]) {
-              clientsWithDuplicates.push(client);
-              clientsWithDuplicates.push(history[formattedResponse]);
-            } else {
-              history[formattedResponse] = client;
-            }
-            results[question][client].type = 'original';
-          } else {
-            results[question][client].type = 'blank';
-          }
-        }
-        clientsWithDuplicates.forEach((client) => {
-          results[question][client].type = 'duplicate';
-        });
-      }
-      this.io.to(this.room).emit('answers:results', results);
+      const resultsWithTypes = module.exports.determineResultTypes(results, letter);
+      this.io.to(this.room).emit('answers:results', resultsWithTypes);
       this.sent = true;
     }
   }
-};
+
+}
+
+module.exports.determineResultTypes = (results, letter) => {
+  // fill in results with empty values, duplicate answers, and client names
+  console.log(`Checking letter ${letter}`);
+  const l = letter ? letter.toLowerCase() : '';
+  for (const [question, responses] of Object.entries(results)) {
+    const history = {};
+    const clientsWithDuplicates = [];
+    for (const [client, response] of Object.entries(responses)) {
+      if (response['answer']) {
+        const formattedResponse = formatResponse(response['answer']);
+        if (letter && !formattedResponse.startsWith(l)) {
+          results[question][client]['type'] = 'incorrect';
+        } else {
+          if (history[formattedResponse]) {
+            clientsWithDuplicates.push(client);
+            clientsWithDuplicates.push(history[formattedResponse]);
+          } else {
+            history[formattedResponse] = client;
+          }
+          results[question][client]['type'] = 'original';
+        }
+      } else {
+        results[question][client]['type'] = 'blank';
+      }
+    }
+    clientsWithDuplicates.forEach((client) => {
+      results[question][client]['type'] = 'duplicate';
+    });
+  }
+  return results;
+}
+
+function formatResponse(response) {
+  return response.trim().toLowerCase().replace(/[^0-9a-z]/gi, '');
+}
