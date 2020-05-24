@@ -56,10 +56,10 @@ module.exports.determineResultTypes = (results, letter) => {
     const history = {};
     const clientsWithDuplicates = [];
     for (const [client, response] of Object.entries(responses)) {
-      if (response['answer']) {
-        const formattedResponse = formatResponse(response['answer']);
+      if (response.answer) {
+        const formattedResponse = formatResponse(response.answer);
         if (letter && !formattedResponse.startsWith(l)) {
-          results[question][client]['type'] = 'incorrect';
+          results[question][client].type = 'incorrect';
         } else {
           if (history[formattedResponse]) {
             clientsWithDuplicates.push(client);
@@ -67,14 +67,14 @@ module.exports.determineResultTypes = (results, letter) => {
           } else {
             history[formattedResponse] = client;
           }
-          results[question][client]['type'] = 'original';
+          results[question][client].type = 'original';
         }
       } else {
-        results[question][client]['type'] = 'blank';
+        results[question][client].type = 'blank';
       }
     }
     clientsWithDuplicates.forEach((client) => {
-      results[question][client]['type'] = 'duplicate';
+      results[question][client].type = 'duplicate';
     });
   }
   return results;
