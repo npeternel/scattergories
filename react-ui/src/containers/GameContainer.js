@@ -6,7 +6,6 @@ import PlayersContainer from './PlayersContainer';
 import io from 'socket.io-client';
 import { Redirect } from 'react-router-dom';
 
-console.log(process.env.NODE_ENV);
 const server = process.env.NODE_ENV === 'development' ? 'localhost:3001' : '';
 const socket = io(server);
 

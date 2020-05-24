@@ -12,7 +12,7 @@ class HomeModal extends React.Component {
             X
           </button>
           <h3>Enter Name</h3>
-          <div style={{'text-align': 'center'}}>
+          <div style={{'textAlign': 'center'}}>
             <input style={{'margin': '1px 5px'}}value={this.props.input} onChange={(event) => this.props.handleValue(event)}>
             </input>
             <Link to={{pathname:'/game', name:this.props.input}}>Go</Link>
