@@ -51,7 +51,7 @@ module.exports.Answers = class Answers {
 module.exports.determineResultTypes = (results, letter) => {
   // fill in results with empty values, duplicate answers, and client names
   console.log(`Checking letter ${letter}`);
-  const l = letter.toLowerCase();
+  const l = letter ? letter.toLowerCase() : '';
   for (const [question, responses] of Object.entries(results)) {
     const history = {};
     const clientsWithDuplicates = [];
@@ -59,7 +59,6 @@ module.exports.determineResultTypes = (results, letter) => {
       if (response['answer']) {
         const formattedResponse = formatResponse(response['answer']);
         if (letter && !formattedResponse.startsWith(l)) {
-          console.log(`${formattedResponse} result of ${formattedResponse.startsWith(l)}`);
           results[question][client]['type'] = 'incorrect';
         } else {
           if (history[formattedResponse]) {
