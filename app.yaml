@@ -11,3 +11,7 @@ env_variables:
 skip_files:
  - node_modules/
  - react-ui/node_modules/
+handlers:
+- url: /.*
+  script: auto
+  secure: always
