@@ -93,9 +93,6 @@ p, li {
 .close-btn {
   float: right;
   border: none;
-  /* height: 100%; */
-  /* width: 24px; */
-  /* border-radius: 50%; */
 }
 
 input[type="text"] {
