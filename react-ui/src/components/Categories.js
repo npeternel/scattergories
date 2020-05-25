@@ -47,6 +47,7 @@ class Categories extends React.Component {
                     ? <Results key={`result-${category}-${new Date().getTime()}`} result={results[i]} />
                     : (
                       <input
+                        type="text"
                         onKeyDown={(event) => this.handleEnter(event, i)}
                         ref={(input) => { this.inputs[i] = input; }}
                         className="category-input"

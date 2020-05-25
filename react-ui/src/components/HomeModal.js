@@ -13,7 +13,7 @@ const HomeModal = (props) => {
         </button>
         <h3>Enter Name</h3>
         <div style={{ textAlign: 'center' }}>
-          <input style={{ margin: '1px 5px' }} value={input} onChange={(event) => handleValue(event)} />
+          <input type="text" style={{ margin: '1px 5px' }} value={input} onChange={(event) => handleValue(event)} />
           <Link to={{ pathname: '/game', name: input }}>
             <button type="button">Go</button>
           </Link>
