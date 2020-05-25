@@ -45,7 +45,7 @@ class LetterContainer extends React.Component {
 }
 
 LetterContainer.propTypes = {
-  socket: PropTypes.isRequired
+  socket: PropTypes.object.isRequired
 };
 
 export default LetterContainer;

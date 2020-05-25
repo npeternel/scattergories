@@ -82,7 +82,7 @@ class TimerContainer extends React.Component {
 }
 
 TimerContainer.propTypes = {
-  socket: PropTypes.isRequired
+  socket: PropTypes.object.isRequired
 };
 
 export default TimerContainer;

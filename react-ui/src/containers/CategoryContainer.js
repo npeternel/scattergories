@@ -149,7 +149,7 @@ class CategoryContainer extends React.Component {
 }
 
 CategoryContainer.propTypes = {
-  socket: PropTypes.isRequired,
+  socket: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired
 };
 

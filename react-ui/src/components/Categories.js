@@ -40,11 +40,11 @@ class Categories extends React.Component {
         <div className="category-list">
           <ol>
             {categories.map((category, i) => (
-              <li key={`li-${category}-${new Date().getTime()}`}>
+              <li key={`li-${category}`}>
                 <div className="category-div">
-                  <Category key={`${category}-${new Date().getTime()}`} title={category} i={i} showCategories={showCategories} />
+                  <Category key={`${category}`} title={category} i={i} showCategories={showCategories} />
                   { end
-                    ? <Results key={`result-${category}-${new Date().getTime()}`} result={results[i]} />
+                    ? <Results key={`${results[i]}`} result={results[i]} />
                     : (
                       <input
                         type="text"
@@ -67,9 +67,9 @@ class Categories extends React.Component {
 
 Categories.propTypes = {
   showCategories: PropTypes.bool.isRequired,
-  categories: PropTypes.isRequired,
-  answers: PropTypes.isRequired,
-  results: PropTypes.isRequired,
+  categories: PropTypes.array.isRequired,
+  answers: PropTypes.object.isRequired,
+  results: PropTypes.object.isRequired,
   end: PropTypes.bool.isRequired,
   handleShuffle: PropTypes.func.isRequired,
   handleValue: PropTypes.func.isRequired

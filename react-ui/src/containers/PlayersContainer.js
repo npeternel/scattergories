@@ -34,7 +34,7 @@ class PlayersContainer extends React.Component {
 }
 
 PlayersContainer.propTypes = {
-  socket: PropTypes.isRequired
+  socket: PropTypes.object.isRequired
 };
 
 export default PlayersContainer;

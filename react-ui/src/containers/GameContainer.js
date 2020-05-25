@@ -21,7 +21,7 @@ class GameContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { location: name } = this.props;
+    const { location: { name } } = this.props;
     if (name) {
       this.setState({
         name,
@@ -54,7 +54,7 @@ class GameContainer extends React.Component {
 }
 
 GameContainer.propTypes = {
-  location: PropTypes.isRequired
+  location: PropTypes.object.isRequired
 };
 
 export default GameContainer;

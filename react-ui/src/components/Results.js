@@ -8,7 +8,7 @@ const Results = (props) => {
     <div className="results">
       {Object.keys(resultMap).map((user) => (
         <p key={`${resultMap[user].answer}-${new Date().getTime()}`} className={`result-${resultMap[user].type}`}>
-          {`${user} : ${resultMap[user].answer}`}
+          {`${user}: ${resultMap[user].answer}`}
         </p>
       ))}
     </div>
