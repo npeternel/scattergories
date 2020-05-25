@@ -3,9 +3,10 @@ import '../index.css';
 
 const Players = (props) => {
   const { players } = props || [];
+  const playerList = players || [];
   return (
     <ul>
-      {players.map((player) => <li key={`${player}-${new Date().getTime()}`}>{player}</li>)}
+      {playerList.map((player) => <li key={`${player}-${new Date().getTime()}`}>{player}</li>)}
     </ul>
   );
 };

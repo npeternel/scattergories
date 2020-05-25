@@ -3,11 +3,12 @@ import '../index.css';
 
 const Results = (props) => {
   const { result } = props || {};
+  const resultMap = result || {};
   return (
     <div className="results">
-      {Object.keys(result).map((user) => (
-        <p key={`${result}-${new Date().getTime()}`} className={`result-${result[user].type}`}>
-          {`${user} : ${result[user].answer}`}
+      {Object.keys(resultMap).map((user) => (
+        <p key={`${resultMap[user].answer}-${new Date().getTime()}`} className={`result-${resultMap[user].type}`}>
+          {`${user} : ${resultMap[user].answer}`}
         </p>
       ))}
     </div>
