@@ -8,7 +8,7 @@ const HomeModal = (props) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <button type="button" style={{ float: 'right' }} onClick={handleClose}>
+        <button type="button" className="close-btn" onClick={handleClose}>
           X
         </button>
         <h3>Enter Name</h3>
