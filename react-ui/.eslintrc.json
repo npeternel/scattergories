@@ -23,7 +23,9 @@
         "react"
     ],
     "rules": {
+        "no-console": 2,
         "comma-dangle": "off",
-        "react/jsx-filename-extension": "off"
+        "react/jsx-filename-extension": "off",
+        "react/forbid-prop-types": "off"
     }
 }
