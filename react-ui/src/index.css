@@ -88,8 +88,18 @@ p, li {
 .category-input {
   display: inline-block;
   margin: 2px;
-  vertical-align: top;
-  line-height: 16px;
+}
+
+.close-btn {
+  float: right;
+  border: none;
+  /* height: 100%; */
+  /* width: 24px; */
+  /* border-radius: 50%; */
+}
+
+input[type="text"] {
+  font-size: 20px;
 }
 
 .title {

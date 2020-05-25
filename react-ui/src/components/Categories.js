@@ -43,7 +43,7 @@ class Categories extends React.Component {
                   <Category key={`${i}+++`} title={category} i={i} state={this.props.state}/>
                   { end ?
                     <Results key={`${i}+`} result={results[i]}/> :
-                    <input onKeyDown={(event) => this.handleEnter(event, i)}
+                    <input type="text" onKeyDown={(event) => this.handleEnter(event, i)}
                     ref={(input) => this.inputs[i] = input} className="category-input"
                     value={answers[i] || ''} onChange={(event) => this.props.handleValue(event, i)}>
                     </input>

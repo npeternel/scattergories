@@ -8,12 +8,12 @@ class HomeModal extends React.Component {
     return (
       <div className="modal">
         <div className="modal-content">
-          <button style={{float: 'right'}} onClick={this.props.handleClose}>
+          <button className='close-btn' onClick={this.props.handleClose}>
             X
           </button>
           <h3>Enter Name</h3>
           <div style={{'textAlign': 'center'}}>
-            <input autoFocus style={{'margin': '1px 5px'}}value={this.props.input} onChange={(event) => this.props.handleValue(event)}>
+            <input autoFocus type="text" style={{'margin': '1px 5px'}}value={this.props.input} onChange={(event) => this.props.handleValue(event)}>
             </input>
             <Link to={{pathname:'/game', name:this.props.input}}>
               <button>Go</button>
