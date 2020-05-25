@@ -1,18 +1,14 @@
 import React from 'react';
 import '../index.css';
 
-class Players extends React.Component {
-
-  render() {
-    const players = this.props.players || [];
-    return (
-      <ul>
-        {players.map((player, i) => 
-        <li key={`${i}player`}>{player}</li>
-        )}
-      </ul>
-    )
-  }
-}
+const Players = (props) => {
+  const { players } = props || [];
+  const playerList = players || [];
+  return (
+    <ul>
+      {playerList.map((player) => <li key={`${player}-${new Date().getTime()}`}>{player}</li>)}
+    </ul>
+  );
+};
 
 export default Players;

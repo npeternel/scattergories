@@ -1,18 +1,18 @@
 import React from 'react';
 import '../index.css';
 
-class Results extends React.Component {
-
-  render() {
-    const result = this.props.result || {};
-    return (
-      <div className="results">
-        {Object.keys(result).map((user, i) => 
-        <p key={`${i}result`} className={`result-${result[user].type}`}>{user}: {result[user].answer}</p>
-        )}
-      </div>
-    )
-  }
-}
+const Results = (props) => {
+  const { result } = props || {};
+  const resultMap = result || {};
+  return (
+    <div className="results">
+      {Object.keys(resultMap).map((user) => (
+        <p key={`${resultMap[user].answer}-${new Date().getTime()}`} className={`result-${resultMap[user].type}`}>
+          {`${user}: ${resultMap[user].answer}`}
+        </p>
+      ))}
+    </div>
+  );
+};
 
 export default Results;

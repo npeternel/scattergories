@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class LetterContainer extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class LetterContainer extends React.Component {
     this.socket = props.socket;
     this.state = {
       letter: ''
-    }
+    };
   }
 
   componentDidMount() {
@@ -28,18 +29,23 @@ class LetterContainer extends React.Component {
   }
 
   render() {
+    const { letter } = this.state;
     return (
       <div className="letter">
         <h4>Letter</h4>
-        <h1 style={{'fontSize': '100px'}}>{this.state.letter}</h1>
+        <h1 style={{ fontSize: '100px' }}>{letter}</h1>
         <div className="shuffle-btn">
-          <button onClick={() => this.shuffleLetter()}>
+          <button type="button" onClick={() => this.shuffleLetter()}>
             Shuffle
           </button>
         </div>
       </div>
-    )
+    );
   }
 }
+
+LetterContainer.propTypes = {
+  socket: PropTypes.object.isRequired
+};
 
 export default LetterContainer;

@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "test": "tape server/test/*.test.js",
+    "lint": "eslint 'server/**/*.js'",
+    "test": "tape server/test/*.test.js && npm run lint",
     "build": "cd react-ui/ && npm install && npm run build",
     "gcp-build": "npm run build && rm -rf react-ui/node_modules"
   },
@@ -23,6 +24,14 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "nodemon": "^2.0.4",
     "tape": "^5.0.0"
   }

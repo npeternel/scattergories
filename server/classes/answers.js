@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports.Answers = class Answers {
   constructor(io, room) {
     this.io = io;
@@ -32,10 +30,10 @@ module.exports.Answers = class Answers {
       for (const [client, answers] of Object.entries(this.answers)) {
         for (const [questionNumber, answer] of Object.entries(answers)) {
           if (results[questionNumber]) {
-            results[questionNumber][client] = {'answer': answer};
+            results[questionNumber][client] = { answer };
           } else {
             const tmp = {};
-            tmp[client] = {'answer': answer};
+            tmp[client] = { answer };
             results[questionNumber] = tmp;
           }
         }
@@ -45,10 +43,14 @@ module.exports.Answers = class Answers {
       this.sent = true;
     }
   }
+};
 
+function formatResponse(response) {
+  return response.trim().toLowerCase().replace(/[^0-9a-z]/gi, '');
 }
 
-module.exports.determineResultTypes = (results, letter) => {
+module.exports.determineResultTypes = (resultsIn, letter) => {
+  const results = resultsIn;
   // fill in results with empty values, duplicate answers, and client names
   console.log(`Checking letter ${letter}`);
   const l = letter ? letter.toLowerCase() : '';
@@ -56,10 +58,10 @@ module.exports.determineResultTypes = (results, letter) => {
     const history = {};
     const clientsWithDuplicates = [];
     for (const [client, response] of Object.entries(responses)) {
-      if (response['answer']) {
-        const formattedResponse = formatResponse(response['answer']);
+      if (response.answer) {
+        const formattedResponse = formatResponse(response.answer);
         if (letter && !formattedResponse.startsWith(l)) {
-          results[question][client]['type'] = 'incorrect';
+          results[question][client].type = 'incorrect';
         } else {
           if (history[formattedResponse]) {
             clientsWithDuplicates.push(client);
@@ -67,19 +69,15 @@ module.exports.determineResultTypes = (results, letter) => {
           } else {
             history[formattedResponse] = client;
           }
-          results[question][client]['type'] = 'original';
+          results[question][client].type = 'original';
         }
       } else {
-        results[question][client]['type'] = 'blank';
+        results[question][client].type = 'blank';
       }
     }
     clientsWithDuplicates.forEach((client) => {
-      results[question][client]['type'] = 'duplicate';
+      results[question][client].type = 'duplicate';
     });
   }
   return results;
-}
-
-function formatResponse(response) {
-  return response.trim().toLowerCase().replace(/[^0-9a-z]/gi, '');
-}
+};

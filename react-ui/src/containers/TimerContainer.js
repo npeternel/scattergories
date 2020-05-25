@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
 
 class TimerContainer extends React.Component {
@@ -15,12 +16,14 @@ class TimerContainer extends React.Component {
 
   componentDidMount() {
     this.socket.on('room', (data) => {
-      this.setTimer(data.time, this.state.running);
+      const { running } = this.state;
+      this.setTimer(data.time, running);
     });
     this.socket.on('game:start', () => {
+      const { running, time } = this.state;
       this.setState({
-        time: this.state.time,
-        running: this.state.running,
+        time,
+        running,
         ended: false
       });
     });
@@ -28,8 +31,9 @@ class TimerContainer extends React.Component {
       this.setTimer(data.time, data.running);
     });
     this.socket.on('time:end', () => {
+      const { time } = this.state;
       this.setState({
-        time: this.state.time,
+        time,
         running: false,
         ended: true
       });
@@ -37,18 +41,19 @@ class TimerContainer extends React.Component {
   }
 
   setTimer = (time, running) => {
+    const { ended } = this.state;
     this.setState({
-      time: time,
-      running: running,
-      ended: this.state.ended
+      time,
+      running,
+      ended
     });
   }
 
   toggleTimer = () => {
-    if (this.state.running) {
+    const { running } = this.state;
+    if (running) {
       this.socket.emit('timer:stop');
-    }
-    if (!this.state.running) {
+    } else {
       this.socket.emit('timer:start');
     }
   }
@@ -62,10 +67,22 @@ class TimerContainer extends React.Component {
   }
 
   render() {
+    const { running, time, ended } = this.state;
     return (
-      <Timer state={this.state} handleClick={this.toggleTimer} handleReset={this.resetTimer} handleRestart={this.restartGame}/>
-    )
+      <Timer
+        running={running}
+        time={time}
+        ended={ended}
+        handleClick={this.toggleTimer}
+        handleReset={this.resetTimer}
+        handleRestart={this.restartGame}
+      />
+    );
   }
 }
+
+TimerContainer.propTypes = {
+  socket: PropTypes.object.isRequired
+};
 
 export default TimerContainer;

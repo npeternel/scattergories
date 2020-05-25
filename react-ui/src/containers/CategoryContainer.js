@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Categories from '../components/Categories';
 
 class CategoryContainer extends React.Component {
@@ -13,106 +14,143 @@ class CategoryContainer extends React.Component {
       categories: [],
       end: false,
       results: {}
-    }
+    };
   }
 
   componentDidMount() {
     this.socket.on('room', (data) => {
+      const {
+        answers, showCategories, end, results
+      } = this.state;
       this.setState({
-        showCategories: this.state.showCategories,
-        answers: {...this.state.answers},
+        showCategories,
+        answers: { ...answers },
         categories: data.categories,
-        end: this.state.end,
-        results: {...this.state.results}
+        end,
+        results: { ...results }
       });
     });
     this.socket.on('categories', (data) => {
+      const {
+        answers, end, results
+      } = this.state;
       this.setState({
         showCategories: false,
-        answers: {...this.state.answers},
+        answers: { ...answers },
         categories: data.categories,
-        end: this.state.end,
-        results: {...this.state.results}
+        end,
+        results: { ...results }
       });
     });
     this.socket.on('time', (data) => {
+      const {
+        answers, categories, end, results
+      } = this.state;
       this.setState({
         showCategories: data.running,
-        answers: {...this.state.answers},
-        categories: [...this.state.categories],
-        end: this.state.end,
-        results: {...this.state.results}
+        answers: { ...answers },
+        categories: [...categories],
+        end,
+        results: { ...results }
       });
     });
     this.socket.on('game:start', () => {
+      const {
+        categories, results
+      } = this.state;
       this.setState({
         showCategories: true,
         answers: {},
-        categories: [...this.state.categories],
+        categories: [...categories],
         end: false,
-        results: {...this.state.results}
+        results: { ...results }
       });
     });
     this.socket.on('time:end', () => {
+      const {
+        answers, categories, end, results
+      } = this.state;
       this.setState({
         showCategories: true,
-        answers: {...this.state.answers},
-        categories: [...this.state.categories],
-        end: this.state.end,
-        results: {...this.state.results}
+        answers: { ...answers },
+        categories: [...categories],
+        end,
+        results: { ...results }
       });
-      const answerCopy = {...this.state.answers};
-      for (let i = 0; i < this.state.categories.length; i++) {
+      const answerCopy = { ...answers };
+      for (let i = 0; i < categories.length; i += 1) {
         if (!answerCopy[i]) answerCopy[i] = '';
       }
-      this.socket.emit('answers', {name: this.props.name, id: this.socket.id, answers: answerCopy });
+      const { name } = this.props;
+      this.socket.emit('answers', { name, id: this.socket.id, answers: answerCopy });
     });
     this.socket.on('answers:results', (results) => {
+      const {
+        answers, showCategories, categories
+      } = this.state;
       this.setState({
-        showCategories: this.state.showCategories,
-        answers: {...this.state.answers},
-        categories: [...this.state.categories],
+        showCategories,
+        answers: { ...answers },
+        categories: [...categories],
         end: true,
-        results: results
+        results
       });
     });
   }
 
-  shuffleCategories = () => {
+  handleShuffle = () => {
     this.socket.emit('categories:shuffle');
   }
 
   handleShowAnswers = () => {
+    const {
+      answers, showCategories, categories, end, results
+    } = this.state;
     this.setState({
-      showCategories: this.state.showCategories,
-      answers: {...this.state.answers},
-      categories: [...this.state.categories],
-      end: this.state.end,
-      results: {...this.state.results}
+      showCategories,
+      answers: { answers },
+      categories: [...categories],
+      end,
+      results: { ...results }
     });
   }
 
   handleValue = (event, i) => {
-    const tmp = {...this.state.answers};
+    const {
+      answers, showCategories, categories, end, results
+    } = this.state;
+    const tmp = { ...answers };
     tmp[i] = event.target.value;
     this.setState({
-      showCategories: this.state.showCategories,
+      showCategories,
       answers: tmp,
-      categories: [...this.state.categories],
-      end: this.state.end,
-      results: {...this.state.results}
+      categories: [...categories],
+      end,
+      results: { ...results }
     });
   }
 
   render() {
+    const {
+      answers, showCategories, categories, end, results
+    } = this.state;
     return (
       <Categories
-        state={this.state}
-        handleShuffle={this.shuffleCategories}
+        answers={answers}
+        showCategories={showCategories}
+        categories={categories}
+        end={end}
+        results={results}
+        handleShuffle={this.handleShuffle}
         handleValue={this.handleValue}
       />
-    )
+    );
   }
 }
+
+CategoryContainer.propTypes = {
+  socket: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired
+};
 
 export default CategoryContainer;

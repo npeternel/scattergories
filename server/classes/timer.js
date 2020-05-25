@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = class Timer {
   constructor(duration, io, room) {
     this.duration = duration;
@@ -17,19 +15,19 @@ module.exports = class Timer {
   start() {
     console.log('Starting timer');
     if (this.time === 0) this.reset();
-    this.io.to(this.room).emit('time', {time: this.time, running: true});
+    this.io.to(this.room).emit('time', { time: this.time, running: true });
     this.interval = setInterval(() => this.tick(), 1000);
   }
 
   tick() {
-    this.time--;
-    this.io.to(this.room).emit('time', {time: this.time, running: true});
+    this.time -= 1;
+    this.io.to(this.room).emit('time', { time: this.time, running: true });
     if (this.time <= 0) this.end();
   }
 
   stop() {
     console.log('Stopping timer');
-    this.io.to(this.room).emit('time', {time: this.time, running: false});
+    this.io.to(this.room).emit('time', { time: this.time, running: false });
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = undefined;
@@ -45,11 +43,10 @@ module.exports = class Timer {
   reset() {
     console.log('Resetting timer');
     this.time = this.duration;
-    this.io.to(this.room).emit('time', {time: this.time, running: false});
+    this.io.to(this.room).emit('time', { time: this.time, running: false });
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = undefined;
     }
   }
-
-}
+};

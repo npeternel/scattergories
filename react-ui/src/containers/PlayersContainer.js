@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Players from '../components/Players';
 import '../index.css';
 
@@ -9,7 +10,7 @@ class PlayersContainer extends React.Component {
     this.socket = props.socket;
     this.state = {
       players: []
-    }
+    };
   }
 
   componentDidMount() {
@@ -22,13 +23,18 @@ class PlayersContainer extends React.Component {
 
 
   render() {
+    const { players } = this.state;
     return (
       <div className="players">
         <h3>Players</h3>
-        <Players players={this.state.players} />
+        <Players players={players} />
       </div>
-    )
+    );
   }
 }
+
+PlayersContainer.propTypes = {
+  socket: PropTypes.object.isRequired
+};
 
 export default PlayersContainer;
