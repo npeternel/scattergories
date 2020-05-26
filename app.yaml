@@ -13,5 +13,6 @@ skip_files:
  - react-ui/node_modules/
 handlers:
 - url: /.*
+  redirect_http_response_code: 301
   script: auto
   secure: always
