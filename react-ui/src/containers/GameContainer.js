@@ -11,10 +11,10 @@ const server = process.env.NODE_ENV === 'development' ? 'localhost:3001' : '';
 const socket = io(server);
 
 class GameContainer extends React.Component {
-  constructor() {
-    super();
-    console.log(this.props);
-    const { name } = this.props;
+  constructor(props) {
+    super(props);
+
+    const { name } = props;
     this.state = {
       name,
       redirect: name === ''
