@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../index.css';
 import HomeModal from '../components/HomeModal';
 
@@ -7,45 +8,33 @@ class MainContainer extends React.Component {
     super();
 
     this.state = {
-      show: false,
-      input: ''
+      show: false
     };
   }
 
   handleClose = () => {
-    const { input } = this.state;
     this.setState({
-      show: false,
-      input
+      show: false
     });
   }
 
   handleShow = () => {
-    const { input } = this.state;
     this.setState({
-      show: true,
-      input
-    });
-  }
-
-  handleValue = (event) => {
-    const { show } = this.state;
-    this.setState({
-      show,
-      input: event.target.value
+      show: true
     });
   }
 
   render() {
-    const { show, input } = this.state;
+    const { show } = this.state;
+    const { name, handleName } = this.props;
     return (
       <div>
         <h1 className="title">Scattergories</h1>
         { show
           ? (
             <HomeModal
-              input={input}
-              handleValue={this.handleValue}
+              name={name}
+              handleName={handleName}
               handleClose={this.handleClose}
               handleShow={this.handleShow}
             />
@@ -59,5 +48,10 @@ class MainContainer extends React.Component {
     );
   }
 }
+
+MainContainer.propTypes = {
+  name: PropTypes.string.isRequired,
+  handleName: PropTypes.func.isRequired
+};
 
 export default MainContainer;

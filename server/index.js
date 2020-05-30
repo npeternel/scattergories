@@ -28,11 +28,11 @@ const rooms = {};
 const TIME = process.env.NODE_ENV === 'production' ? 120 : 10;
 
 io.on('connection', (socket) => {
-  if (Object.keys(rooms).length === 0) {
+  socket.on('create', (name) => {
     const id = uuidv4();
     const room = {
       id,
-      name: 'myroom',
+      name,
       clients: {},
       timer: new Timer(TIME, io, id),
       letter: new Letter(io, id),
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
     };
     rooms[room.id] = room;
     console.log(`Room with UUID ${room.id} created`);
-  }
+  });
   const roomId = Object.keys(rooms)[0];
   const room = rooms[roomId];
   socket.on('join', (name) => {

@@ -13,27 +13,17 @@ const socket = io(server);
 class GameContainer extends React.Component {
   constructor() {
     super();
-
+    console.log(this.props);
+    const { name } = this.props;
     this.state = {
-      name: '',
-      redirect: false
+      name,
+      redirect: name === ''
     };
   }
 
   componentDidMount() {
-    const { location: { name } } = this.props;
-    if (name) {
-      this.setState({
-        name,
-        redirect: false
-      });
-      socket.emit('join', name);
-    } else {
-      this.setState({
-        name: '',
-        redirect: true
-      });
-    }
+    const { name } = this.state;
+    socket.emit('join', name);
   }
 
   render() {
@@ -54,7 +44,7 @@ class GameContainer extends React.Component {
 }
 
 GameContainer.propTypes = {
-  location: PropTypes.object.isRequired
+  name: PropTypes.string.isRequired
 };
 
 export default GameContainer;
