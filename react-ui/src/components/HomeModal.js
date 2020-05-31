@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const HomeModal = (props) => {
-  const { handleClose, input, handleValue } = props;
+  const { handleClose, name, handleName } = props;
   return (
     <div className="modal">
       <div className="modal-content">
@@ -13,8 +13,8 @@ const HomeModal = (props) => {
         </button>
         <h3>Enter Name</h3>
         <div style={{ textAlign: 'center' }}>
-          <input type="text" style={{ margin: '1px 5px' }} value={input} onChange={(event) => handleValue(event)} />
-          <Link to={{ pathname: '/game', name: input }}>
+          <input type="text" style={{ margin: '1px 5px' }} value={name} onChange={(event) => handleName(event)} />
+          <Link to={{ pathname: '/game' }}>
             <button type="button">Go</button>
           </Link>
         </div>
@@ -25,8 +25,8 @@ const HomeModal = (props) => {
 
 HomeModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
-  input: PropTypes.string.isRequired,
-  handleValue: PropTypes.func.isRequired
+  name: PropTypes.string.isRequired,
+  handleName: PropTypes.func.isRequired
 };
 
 export default HomeModal;
