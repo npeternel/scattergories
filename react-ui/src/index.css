@@ -99,21 +99,6 @@ input[type="text"] {
   font-size: 20px;
 }
 
-.title {
-  position: fixed;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -25%);
-}
-
-.join-btn {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 24px;
-}
-
 .letter {
   float: left;
   position: relative;
@@ -184,6 +169,22 @@ input[type="text"] {
   color: grey;
 }
 
+.rooms {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.room-join-btn {
+  font-size: 20px;
+}
+
+.room-name {
+  display: inline-block;
+  margin-right: 10px;
+}
+
 .shuffle-btn {
   text-align: center;
 }
@@ -195,4 +196,11 @@ input[type="text"] {
 
 .timer-btn {
   text-align: center;
+}
+
+.title {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -15%);
 }

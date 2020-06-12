@@ -4,28 +4,46 @@ import '../index.css';
 import HomeModal from '../components/HomeModal';
 
 class MainContainer extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { socket } = this.props;
+    this.socket = socket;
 
     this.state = {
-      show: false
+      show: false,
+      rooms: ['foo', 'bar', 'Nicki\'s room']
     };
   }
 
+  componentDidMount() {
+    const { show } = this.state;
+    this.socket.on('room:list', ({ rooms }) => {
+      this.setState({
+        show,
+        rooms
+      });
+    });
+  }
+
   handleClose = () => {
+    const { rooms } = this.state;
     this.setState({
-      show: false
+      show: false,
+      rooms
     });
   }
 
   handleShow = () => {
+    const { rooms } = this.state;
     this.setState({
-      show: true
+      show: true,
+      rooms
     });
   }
 
   render() {
-    const { show } = this.state;
+    const { show, rooms } = this.state;
     const { name, handleName } = this.props;
     return (
       <div>
@@ -40,9 +58,19 @@ class MainContainer extends React.Component {
             />
           )
           : (
-            <button type="button" className="join-btn" onClick={this.handleShow}>
-              Join Game
+            <div className="rooms">
+            <button type="button" className="room-join-btn" onClick={this.handleShow}>
+              Create Room
             </button>
+            {rooms.map((room) => (
+            <div key={room} className="room">
+              <p className="room-name">{room}</p>
+              <button type="button" className="room-join-btn" onClick={this.handleShow}>
+                Join Room
+              </button>
+            </div>
+            ))}
+          </div>
           )}
       </div>
     );

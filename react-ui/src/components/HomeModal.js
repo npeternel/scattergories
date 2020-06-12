@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const HomeModal = (props) => {
-  const { handleClose, name, handleName } = props;
+  const { handleClose, handleGo, name, handleName } = props;
   return (
     <div className="modal">
       <div className="modal-content">
@@ -15,7 +15,7 @@ const HomeModal = (props) => {
         <div style={{ textAlign: 'center' }}>
           <input type="text" style={{ margin: '1px 5px' }} value={name} onChange={(event) => handleName(event)} />
           <Link to={{ pathname: '/game' }}>
-            <button type="button">Go</button>
+            <button type="button" onClick={handleGo}>Go</button>
           </Link>
         </div>
       </div>
