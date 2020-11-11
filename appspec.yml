@@ -2,7 +2,7 @@ version: 0.0
 os: linux 
 files:
   - source: /
-    destination: /
+    destination: /usr/src/scattergories
 hooks:
   ApplicationStart:
     - location: /codedeploy.sh
