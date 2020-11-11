@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 cd /usr/src/scattergories
 npm run build
 pm2 start npm --name "server" -- start
