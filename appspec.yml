@@ -4,6 +4,9 @@ files:
   - source: /
     destination: /usr/src/scattergories
 hooks:
+  PreInstall:
+    - location: /scripts/cleanup.sh
+      runas: root
   ApplicationStart:
-    - location: /codedeploy.sh
+    - location: /scripts/codedeploy.sh
       runas: root
