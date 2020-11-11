@@ -1,5 +1,5 @@
 #!/bin/bash
 cd /usr/src/scattergories
 npm run build
-npm start
-cd react-ui/ && npm start
+pm2 start npm --name "server" -- start
+pm2 serve react-ui/build/ 3000 --name "ui"
