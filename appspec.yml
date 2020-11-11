@@ -2,7 +2,7 @@ version: 0.0
 os: linux 
 files:
   - source: /
-    destination: /usr/src
+    destination: /
 hooks:
   ApplicationStart:
-    - location: /usr/src/codedeploy.sh
+    - location: /codedeploy.sh
