@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /usr/src/scattergories
 hooks:
-  PreInstall:
+  BeforeInstall:
     - location: /scripts/cleanup.sh
       runas: root
   ApplicationStart:
