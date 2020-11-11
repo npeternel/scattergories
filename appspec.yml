@@ -7,6 +7,10 @@ hooks:
   BeforeInstall:
     - location: /scripts/cleanup.sh
       runas: root
-  ApplicationStart:
-    - location: /scripts/codedeploy.sh
+  AfterInstall:
+    - location: /scripts/build.sh
       runas: root
+  ApplicationStart:
+    - location: /scripts/start.sh
+  ApplicationStop:
+    - location: /scripts/stop.sh

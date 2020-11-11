@@ -10,7 +10,7 @@
     "dev": "nodemon server/index.js",
     "lint": "eslint 'server/**/*.js'",
     "test": "tape server/test/*.test.js && npm run lint",
-    "build": "cd react-ui/ && npm install && npm run build"
+    "build": "npm install && cd react-ui/ && npm install && npm run build"
   },
   "repository": {
     "type": "git",
