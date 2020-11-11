@@ -6,3 +6,4 @@ files:
 hooks:
   ApplicationStart:
     - location: /codedeploy.sh
+      runas: root
