@@ -12,5 +12,7 @@ hooks:
       runas: root
   ApplicationStart:
     - location: /scripts/start.sh
+      runas: root
   ApplicationStop:
     - location: /scripts/stop.sh
+      runas: root
