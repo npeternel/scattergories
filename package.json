@@ -6,7 +6,7 @@
     "node": "10.x"
   },
   "scripts": {
-    "start": "node server/index.js",
+    "start": "NODE_ENV=production node server/index.js",
     "dev": "nodemon server/index.js",
     "lint": "eslint 'server/**/*.js'",
     "test": "tape server/test/*.test.js && npm run lint",
