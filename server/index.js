@@ -28,28 +28,30 @@ const rooms = {};
 const TIME = process.env.NODE_ENV === 'production' ? 120 : 10;
 
 io.on('connection', (socket) => {
-  if (Object.keys(rooms).length === 0) {
+  socket.emit('room:list', Object.values(rooms).map((room) => room.name));
+  socket.on('room:create', ({ name }) => {
     const id = uuidv4();
     const room = {
       id,
-      name: 'myroom',
+      name,
       clients: {},
       timer: new Timer(TIME, io, id),
       letter: new Letter(io, id),
       categories: new Categories(io, id),
       answers: new Answers(io, id)
     };
-    rooms[room.id] = room;
-    console.log(`Room with UUID ${room.id} created`);
-  }
+    rooms[name] = room;
+    console.log(`Room ${name} with UUID ${room.id} created`);
+  });
   const roomId = Object.keys(rooms)[0];
   const room = rooms[roomId];
-  socket.on('join', (name) => {
+  socket.on('join', ({ name, roomName }) => {
     if (!Object.values(room.clients).some((client) => client === name)) {
-      console.log(`New client ${name}`);
-      socket.join(roomId);
+      console.log(`New client ${name} joining ${roomName}`);
+      const room = rooms[roomName];
+      socket.join(roomName);
       room.clients[socket.id] = name;
-      io.to(roomId).emit('room', {
+      io.to(roomName).emit('room', {
         clients: Object.values(room.clients),
         time: room.timer.curr(),
         letter: room.letter.curr(),
@@ -98,9 +100,10 @@ io.on('connection', (socket) => {
     },
     1000);
   });
-  socket.on('disconnect', () => {
+  socket.on('disconnect', ({ roomName }) => {
     console.log(`${room.clients[socket.id]} left`);
-    socket.leave(roomId);
+    const room = rooms[roomName];
+    socket.leave(roomName);
     delete room.clients[socket.id];
     io.to(roomId).emit('room', {
       clients: Object.values(room.clients),
