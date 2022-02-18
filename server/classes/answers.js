@@ -1,9 +1,7 @@
-module.exports.Answers = class Answers {
-  constructor(io, room) {
-    this.io = io;
+module.exports = class Answers {
+  constructor(room) {
     this.room = room;
     this.answers = {};
-    this.sent = false;
   }
 
   // returns true if all answers were submitted from each client in the room
@@ -20,28 +18,24 @@ module.exports.Answers = class Answers {
 
   reset() {
     this.answers = {};
-    this.sent = false;
   }
 
   merge(letter) {
-    if (!this.sent) {
-      const results = {};
-      // create mapping of question number to {client: answer}
-      for (const [client, answers] of Object.entries(this.answers)) {
-        for (const [questionNumber, answer] of Object.entries(answers)) {
-          if (results[questionNumber]) {
-            results[questionNumber][client] = { answer };
-          } else {
-            const tmp = {};
-            tmp[client] = { answer };
-            results[questionNumber] = tmp;
-          }
+    const results = {};
+    // create mapping of question number to {client: answer}
+    for (const [client, answers] of Object.entries(this.answers)) {
+      for (const [questionNumber, answer] of Object.entries(answers)) {
+        if (results[questionNumber]) {
+          results[questionNumber][client] = { answer };
+        } else {
+          const tmp = {};
+          tmp[client] = { answer };
+          results[questionNumber] = tmp;
         }
       }
-      const resultsWithTypes = module.exports.determineResultTypes(results, letter);
-      this.io.to(this.room).emit('answers:results', resultsWithTypes);
-      this.sent = true;
     }
+    const resultsWithTypes = module.exports.determineResultTypes(results, letter);
+    return resultsWithTypes;
   }
 };
 

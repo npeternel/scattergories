@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
+import { phases } from '../phases';
 
 class TimerContainer extends React.Component {
   constructor(props) {
@@ -9,50 +10,25 @@ class TimerContainer extends React.Component {
     this.socket = props.socket;
     this.state = {
       time: 120,
-      running: false,
-      ended: false
+      phase: phases.BEGINNING
     };
   }
 
   componentDidMount() {
-    this.socket.on('room', (data) => {
-      const { running } = this.state;
-      this.setTimer(data.time, running);
-    });
-    this.socket.on('game:start', () => {
-      const { running, time } = this.state;
-      this.setState({
-        time,
-        running,
-        ended: false
-      });
-    });
     this.socket.on('time', (data) => {
-      this.setTimer(data.time, data.running);
-    });
-    this.socket.on('time:end', () => {
-      const { time } = this.state;
+      const { phase } = data.game;
+      const { time } = data.game.timer;
       this.setState({
         time,
-        running: false,
-        ended: true
+        phase
       });
-    });
-  }
-
-  setTimer = (time, running) => {
-    const { ended } = this.state;
-    this.setState({
-      time,
-      running,
-      ended
     });
   }
 
   toggleTimer = () => {
-    const { running } = this.state;
-    if (running) {
-      this.socket.emit('timer:stop');
+    const { phase } = this.state;
+    if (phase === phases.RUNNING) {
+      this.socket.emit('timer:pause');
     } else {
       this.socket.emit('timer:start');
     }
@@ -62,20 +38,19 @@ class TimerContainer extends React.Component {
     this.socket.emit('timer:reset');
   }
 
-  restartGame = () => {
-    this.socket.emit('game:restart');
+  newGame = () => {
+    this.socket.emit('letter:shuffle');
   }
 
   render() {
-    const { running, time, ended } = this.state;
+    const { time, phase } = this.state;
     return (
       <Timer
-        running={running}
         time={time}
-        ended={ended}
+        phase={phase}
         handleClick={this.toggleTimer}
         handleReset={this.resetTimer}
-        handleRestart={this.restartGame}
+        handleNewGame={this.newGame}
       />
     );
   }

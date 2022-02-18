@@ -26,7 +26,7 @@ class MainContainer extends React.Component {
 
   render() {
     const { show } = this.state;
-    const { name, handleName } = this.props;
+    const { name, handleName, handleJoin } = this.props;
     return (
       <div>
         <h1 className="title">Scattergories</h1>
@@ -37,6 +37,7 @@ class MainContainer extends React.Component {
               handleName={handleName}
               handleClose={this.handleClose}
               handleShow={this.handleShow}
+              handleJoin={handleJoin}
             />
           )
           : (
@@ -51,7 +52,8 @@ class MainContainer extends React.Component {
 
 MainContainer.propTypes = {
   name: PropTypes.string.isRequired,
-  handleName: PropTypes.func.isRequired
+  handleName: PropTypes.func.isRequired,
+  handleJoin: PropTypes.func.isRequired
 };
 
 export default MainContainer;

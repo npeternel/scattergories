@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { phases } from '../phases';
 
 const Timer = (props) => {
   const {
-    running,
     time,
-    ended,
+    phase,
     handleClick,
-    handleRestart,
+    handleNewGame,
     handleReset
   } = props;
   return (
@@ -15,34 +15,40 @@ const Timer = (props) => {
       <h4>Time</h4>
       <h1>{time}</h1>
       <div className="timer-btn">
-        {ended ? null
-          : (
-            <button type="button" onClick={() => handleClick()}>
-              {running ? 'Pause Game' : 'Start Game'}
-            </button>
-          )}
-        {ended
+        {(() => {
+          if (phase === phases.RUNNING) {
+            return <button type="button" onClick={() => handleClick()}>Pause</button>
+          }
+          if (phase === phases.PAUSED) {
+            return <button type="button" onClick={() => handleClick()}>Resume</button>
+          }
+          if (phase === phases.BEGINNING)
+            return <button type="button" onClick={() => handleClick()}>Start</button>
+          if (phase === phases.END)
+            return <div>Time's up!</div>
+          if (phase === phases.REVIEWING)
+            return <button type="button" onClick={() => handleNewGame()}>New Game</button>
+        })()
+      }
+        {/* {ended
           ? (
-            <button type="button" onClick={() => handleRestart()}>
-              New Game
-            </button>
+
           )
           : (
             <button type="button" onClick={() => handleReset()}>
               Reset Timer
             </button>
-          )}
+          )} */}
       </div>
     </div>
   );
 };
 
 Timer.propTypes = {
-  running: PropTypes.bool.isRequired,
   time: PropTypes.number.isRequired,
-  ended: PropTypes.bool.isRequired,
+  phase: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
-  handleRestart: PropTypes.func.isRequired,
+  handleNewGame: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired
 };
 
