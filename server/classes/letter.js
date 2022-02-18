@@ -10,9 +10,8 @@ const shuffleLetters = () => {
 };
 
 module.exports = class Letter {
-  constructor(io, room) {
+  constructor(room) {
     this.letters = this.newLetters();
-    this.io = io;
     this.room = room;
     this.last = '';
   }
@@ -40,8 +39,8 @@ module.exports = class Letter {
     if (!this.letters || this.letters.length === 0) {
       this.letters = this.newLetters();
     }
-    this.io.to(this.room).emit('letter', { letter: this.letters[0] });
     const [last] = this.letters;
     this.last = last;
+    return this.letters[0];
   }
 };

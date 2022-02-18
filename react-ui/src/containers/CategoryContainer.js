@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Categories from '../components/Categories';
+import { phases } from '../phases';
 
 class CategoryContainer extends React.Component {
   constructor(props) {
@@ -9,73 +10,35 @@ class CategoryContainer extends React.Component {
     this.socket = props.socket;
 
     this.state = {
-      showCategories: false,
       answers: {},
       categories: [],
-      end: false,
-      results: {}
+      results: {},
+      phase: phases.BEGINNING
     };
   }
 
   componentDidMount() {
-    this.socket.on('room', (data) => {
+    this.socket.on('game', (data) => {
       const {
-        answers, showCategories, end, results
-      } = this.state;
+        categories, results, phase
+      } = data.game;
+      const { answers } = this.state;
       this.setState({
-        showCategories,
         answers: { ...answers },
-        categories: data.categories,
-        end,
-        results: { ...results }
-      });
-    });
-    this.socket.on('categories', (data) => {
-      const {
-        answers, end, results
-      } = this.state;
-      this.setState({
-        showCategories: false,
-        answers: { ...answers },
-        categories: data.categories,
-        end,
-        results: { ...results }
-      });
-    });
-    this.socket.on('time', (data) => {
-      const {
-        answers, categories, end, results
-      } = this.state;
-      this.setState({
-        showCategories: data.running,
-        answers: { ...answers },
-        categories: [...categories],
-        end,
-        results: { ...results }
-      });
-    });
-    this.socket.on('game:start', () => {
-      const {
-        categories, results
-      } = this.state;
-      this.setState({
-        showCategories: true,
-        answers: {},
-        categories: [...categories],
-        end: false,
-        results: { ...results }
+        categories,
+        results,
+        phase
       });
     });
     this.socket.on('time:end', () => {
       const {
-        answers, categories, end, results
+        answers, categories, results
       } = this.state;
       this.setState({
-        showCategories: true,
         answers: { ...answers },
         categories: [...categories],
-        end,
-        results: { ...results }
+        results: { ...results },
+        phase: phases.END
       });
       const answerCopy = { ...answers };
       for (let i = 0; i < categories.length; i += 1) {
@@ -83,18 +46,6 @@ class CategoryContainer extends React.Component {
       }
       const { name } = this.props;
       this.socket.emit('answers', { name, id: this.socket.id, answers: answerCopy });
-    });
-    this.socket.on('answers:results', (results) => {
-      const {
-        answers, showCategories, categories
-      } = this.state;
-      this.setState({
-        showCategories,
-        answers: { ...answers },
-        categories: [...categories],
-        end: true,
-        results
-      });
     });
   }
 
@@ -104,43 +55,40 @@ class CategoryContainer extends React.Component {
 
   handleShowAnswers = () => {
     const {
-      answers, showCategories, categories, end, results
+      answers, categories, results, phase
     } = this.state;
     this.setState({
-      showCategories,
       answers: { answers },
       categories: [...categories],
-      end,
-      results: { ...results }
+      results: { ...results },
+      phase
     });
   }
 
   handleValue = (event, i) => {
     const {
-      answers, showCategories, categories, end, results
+      answers, categories, results, phase
     } = this.state;
     const tmp = { ...answers };
     tmp[i] = event.target.value;
     this.setState({
-      showCategories,
       answers: tmp,
       categories: [...categories],
-      end,
-      results: { ...results }
+      results: { ...results },
+      phase
     });
   }
 
   render() {
     const {
-      answers, showCategories, categories, end, results
+      answers, categories, results, phase
     } = this.state;
     return (
       <Categories
         answers={answers}
-        showCategories={showCategories}
         categories={categories}
-        end={end}
         results={results}
+        phase={phase}
         handleShuffle={this.handleShuffle}
         handleValue={this.handleValue}
       />

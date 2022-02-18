@@ -12,14 +12,10 @@ class LetterContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('room', (data) => {
+    this.socket.on('game', (data) => {
+      const { letter } = data.game;
       this.setState({
-        letter: data.letter
-      });
-    });
-    this.socket.on('letter', (data) => {
-      this.setState({
-        letter: data.letter
+        letter
       });
     });
   }

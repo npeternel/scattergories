@@ -10,9 +10,8 @@ const shuffleCategories = () => {
 };
 
 module.exports = class Categories {
-  constructor(io, room) {
+  constructor(room) {
     this.unused = this.initialize();
-    this.io = io;
     this.room = room;
   }
 
@@ -28,7 +27,6 @@ module.exports = class Categories {
   }
 
   curr() {
-    // this.io.to(this.room).emit('categories', {categories: this.unused.slice(0,12)});
     return this.unused.slice(0, 12);
   }
 
@@ -37,6 +35,6 @@ module.exports = class Categories {
     if (this.unused.length < 12) {
       this.unused = this.unused.concat(this.shuffleCategories());
     }
-    this.io.to(this.room).emit('categories', { categories: this.unused.slice(0, 12) });
+    return this.unused.slice(0, 12);
   }
 };

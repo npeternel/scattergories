@@ -14,9 +14,10 @@ class PlayersContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('room', (data) => {
+    this.socket.on('game', (data) => {
+      const { players } = data.game;
       this.setState({
-        players: data.clients
+        players
       });
     });
   }
