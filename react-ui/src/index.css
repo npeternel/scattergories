@@ -45,7 +45,7 @@ h2 {
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 1.5em;
   text-align: center;
 }
 
@@ -90,13 +90,29 @@ p, li {
   margin: 2px;
 }
 
+.close-btn-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .close-btn {
-  float: right;
   border: none;
 }
 
 input[type="text"] {
-  font-size: 20px;
+  font-size: 1em;
+}
+
+.name-input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.input-wrapper {
+  display: inline-block;
+  width: 100%;
+  font-size: 2em;
 }
 
 .title {
@@ -115,11 +131,8 @@ input[type="text"] {
 }
 
 .letter {
-  float: left;
   position: relative;
   top: 0;
-  left: 15%;
-  width: 20%;
 }
 
 .mid {
@@ -141,15 +154,22 @@ input[type="text"] {
 }
 
 .modal-content {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  padding: 2%;
   border: 1px solid #888;
-  width: 20%;
   -webkit-animation-name: animatemodal;
   -webkit-animation-duration: 0.4s;
   animation-name: animatemodal;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
+  display: inline-block;
+}
+
+.modal-content h3 {
+  margin: 3%;
 }
 
 @-webkit-keyframes animatemodal {
@@ -189,8 +209,11 @@ input[type="text"] {
 }
 
 .timer {
-  position: relative;
+  float: left;
+  position: fixed;
   top: 0;
+  left: 10%;
+  width: 20%;
 }
 
 .timer-btn {

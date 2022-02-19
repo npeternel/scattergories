@@ -8,12 +8,12 @@ const HomeModal = (props) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <button type="button" className="close-btn" onClick={handleClose}>
-          X
-        </button>
+        <div className="close-btn-wrapper" >
+          <button className="close-btn" type="button" onClick={handleClose}>X</button>
+        </div>
         <h3>Enter Name</h3>
-        <div style={{ textAlign: 'center' }}>
-          <input type="text" style={{ margin: '1px 5px' }} value={name} onChange={(event) => handleName(event)} />
+        <div className="input-wrapper" style={{ textAlign: 'center' }}>
+          <input className="name-input" type="text" value={name} onChange={(event) => handleName(event)} />
           <Link to={{ pathname: '/game' }}>
             <button onClick={handleJoin} type="button">Go</button>
           </Link>

@@ -27,9 +27,9 @@ class GameContainer extends React.Component {
       ? <Redirect to="/" />
       : (
         <div>
-          <LetterContainer socket={socket} />
+          <TimerContainer socket={socket} />
           <div className="mid">
-            <TimerContainer socket={socket} />
+            <LetterContainer socket={socket} />
             <CategoryContainer name={name} socket={socket} />
           </div>
           <PlayersContainer socket={socket} />
