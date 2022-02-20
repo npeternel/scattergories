@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-pm2 delete server
-pm2 delete ui
+pm2 delete server || :
+pm2 delete ui || :
