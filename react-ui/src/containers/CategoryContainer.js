@@ -22,7 +22,11 @@ class CategoryContainer extends React.Component {
       const {
         categories, results, phase
       } = data.game;
-      const { answers } = this.state;
+      let { answers } = this.state;
+      const oldPhase = this.state.phase;
+      if (oldPhase === phases.REVIEWING && phase === phases.BEGINNING) {
+        answers = {};
+      }
       this.setState({
         answers: { ...answers },
         categories,
